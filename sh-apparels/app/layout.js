@@ -1,3 +1,4 @@
+import ProductPage from '@/pages/product'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 
@@ -14,6 +15,7 @@ export default function RootLayout({ children }) {
       <body>
       <Navbar />
         {children}
+        <ProductPage />
       </body>
     </html>
   )
