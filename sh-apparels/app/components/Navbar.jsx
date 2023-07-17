@@ -2,6 +2,7 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useSession,signIn,signOut } from 'next-auth/react'
 
 const navigation = {
   categories: [
@@ -182,6 +183,8 @@ export default function Navbar() {
                     </a>
                   </div>
                 </div>
+                <button>
+                </button>
 
                 <div className="border-t border-gray-200 px-4 py-6">
                   <a href="#" className="-m-2 flex items-center p-2">
