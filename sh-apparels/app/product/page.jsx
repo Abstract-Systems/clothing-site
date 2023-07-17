@@ -1,6 +1,9 @@
 "use client"
 import { useState } from 'react';
+import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation'
+
 
 const ProductPage = () => {
   const [images, setImages] = useState({
@@ -13,7 +16,13 @@ const ProductPage = () => {
   const [activeImg, setActiveImage] = useState(images.img1);
   const [amount, setAmount] = useState(1);
 
-  const { data: session } = useSession();
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+        redirect('/api/auth/signin?callbackUrl=/client')
+    }
+})
+console.log(session?.user?.name)
 
   return (
     <div>
@@ -49,6 +58,10 @@ const ProductPage = () => {
       ) : (
         <div>
           <p>Please log in to view this page.</p>
+          <div>
+
+          <li><Link className='"bg-blue-800 p-4 border-2' href="/api/auth/signin">Sign In</Link></li>
+          </div>
         </div>
       )}
     </div>

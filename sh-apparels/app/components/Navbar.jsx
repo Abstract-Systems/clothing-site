@@ -2,7 +2,8 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { useSession,signIn,signOut } from 'next-auth/react'
+import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 
 const navigation = {
   categories: [
@@ -45,7 +46,7 @@ const navigation = {
         },
       ],
     },
-],
+  ],
   pages: [
     { name: 'Company', href: '#' },
     { name: 'Stores', href: '#' },
@@ -58,6 +59,8 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const session = useSession();
+  console.log(session.user);
 
   return (
     <div className="bg-white">
@@ -172,11 +175,22 @@ export default function Navbar() {
                 </div>
 
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                  <div className="flow-root">
-                    <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
-                      Sign in
-                    </a>
+                  <div>
+                    {session ? (
+                      <div className="flow-root">
+                        <Link href="/api/auth/signin" className="-m-2 block p-2 font-medium text-gray-900">
+                          Sign in
+                        </Link>
+                      </div>
+                    ) : (
+                      <div className="flow-root">
+                        <Link href="/api/auth/signout" className="-m-2 block p-2 font-medium text-gray-900">
+                          Sign Out
+                        </Link>
+                      </div>
+                    )}
                   </div>
+
                   <div className="flow-root">
                     <a href="#" className="-m-2 block p-2 font-medium text-gray-900">
                       Create account
@@ -334,9 +348,12 @@ export default function Navbar() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                  {session?  <Link href="/api/auth/signin" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                     Sign in
-                  </a>
+                  </Link> :<Link href="/api/auth/signout" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                    Sign out
+                  </Link>}
+                 
                   <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
                   <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                     Create account
