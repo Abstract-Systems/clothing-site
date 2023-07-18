@@ -4,6 +4,7 @@ import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
+import SignInButton from './SignInButton'
 
 const navigation = {
   categories: [
@@ -348,11 +349,7 @@ export default function Navbar() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  {session?  <Link href="/api/auth/signin" className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                    Sign in
-                  </Link> :<Link href="/api/auth/signout" className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                    Sign out
-                  </Link>}
+                 <SignInButton />
                  
                   <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
                   <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
