@@ -2,6 +2,7 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import SessionProviders from './context/AuthProvider'
 import Navbar from './components/Navbar'
+import Slider from './components/Slider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
     <SessionProviders>
         <Navbar />
+        <Slider />
         <div>
         {children}
         </div>  

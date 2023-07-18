@@ -5,6 +5,7 @@ import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@her
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import SignInButton from './SignInButton'
+import CartDropdown from './CartDropdown'
 
 const navigation = {
   categories: [
@@ -59,9 +60,16 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+
   const [open, setOpen] = useState(false)
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const handleCartButtonClick = () => {
+    setIsCartOpen(!isCartOpen);
+  };
+
+
   const session = useSession();
-  console.log(session.user);
 
   return (
     <div className="bg-white">
@@ -349,8 +357,8 @@ export default function Navbar() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                 <SignInButton />
-                 
+                  <SignInButton />
+
                   <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
                   <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                     Create account
@@ -379,14 +387,25 @@ export default function Navbar() {
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <a href="#" className="group -m-2 flex items-center p-2">
-                    <ShoppingBagIcon
+                  <div className="relative">
+
+
+                    <span className="ml-2 flex items-end">
+                      <span className="text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                        0
+                      </span>
+                    </span>
+                    <span className="sr-only">items in cart, view bag</span>
+                  </div>
+                  <div className="navbar">
+
+                    <button onClick={handleCartButtonClick}><ShoppingBagIcon
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
-                    <span className="sr-only">items in cart, view bag</span>
-                  </a>
+                    /></button>
+                    {isCartOpen && <CartDropdown setOpen={setIsCartOpen} />}
+
+                  </div>
                 </div>
               </div>
             </div>
