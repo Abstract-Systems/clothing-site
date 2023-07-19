@@ -87,6 +87,26 @@ export default function CartDropdown({ setOpen }) {
                             role="list"
                             className="-my-6 divide-y divide-gray-200"
                           >
+
+                            {/* if cart length is zero Write cart is empty in middle of page and give a link go back to shopping */
+                            cart.length === 0 && (
+                              <div className="flex flex-col items-center justify-center">
+                                <h1 className="text-2xl font-bold text-gray-700">
+                                  Your cart is empty.
+                                </h1>
+                                <h1 className="text-2xl font-bold text-gray-700">
+                                  Fill up the bag.
+                                </h1>
+                                {/* Close the cart */}
+                                <button
+                                  onClick={() => setOpen(false)}
+                                  className="px-4 py-2 mt-4 text-white bg-gray-800 rounded-md"
+                                >
+                                  Go back to shopping
+                                </button>
+
+                              </div>
+                            ) }
                             {cart &&
                               cart.map((product) => (
                                 <li key={product.id} className="flex py-6">
@@ -158,10 +178,10 @@ export default function CartDropdown({ setOpen }) {
                           or
                           <button
                             type="button"
-                            className="font-medium text-indigo-600 hover:text-indigo-500"
+                            className="font-medium pl-2 text-indigo-600 hover:text-indigo-500"
                             onClick={() => setOpen(false)}
                           >
-                            Continue Shopping
+                          Continue Shopping
                             <span aria-hidden="true"> &rarr;</span>
                           </button>
                         </p>
