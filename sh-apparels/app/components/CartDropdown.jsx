@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useContext } from "react";
-import CartContext from "../context/CartContext";
+import { CartContext } from "@/context/CartContext";
 
 const products = [
   {
@@ -33,8 +33,9 @@ const products = [
 ];
 
 export default function CartDropdown({ setOpen }) {
-  const { cartItems } = useContext(CartContext);
-  console.log(cartItems);
+  const { cart, removeFromCart, increaseQuantity, decreaseQuantity } = useContext(CartContext);
+  console.log(cart);
+
   return (
     <Transition.Root show={true} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={() => setOpen(false)}>
@@ -86,8 +87,8 @@ export default function CartDropdown({ setOpen }) {
                             role="list"
                             className="-my-6 divide-y divide-gray-200"
                           >
-                            {cartItems &&
-                              cartItems.map((product) => (
+                            {cart &&
+                              cart.map((product) => (
                                 <li key={product.id} className="flex py-6">
                                   <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                     <img
@@ -112,12 +113,15 @@ export default function CartDropdown({ setOpen }) {
                                       </p>
                                     </div>
                                     <div className="flex flex-1 items-end justify-between text-sm">
+                                      <button onClick={() => decreaseQuantity(product)}>-</button>
                                       <p className="text-gray-500">
                                         Qty {product.quantity}
                                       </p>
+                                      <button onClick={() => increaseQuantity(product)}>+</button>
 
                                       <div className="flex">
                                         <button
+                                          onClick={() => removeFromCart(product)}
                                           type="button"
                                           className="font-medium text-indigo-600 hover:text-indigo-500"
                                         >
@@ -136,7 +140,7 @@ export default function CartDropdown({ setOpen }) {
                     <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <p>Subtotal</p>
-                        <p>$262.00</p>
+                        <p>PKR0</p>
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">
                         Shipping and taxes calculated at checkout.
