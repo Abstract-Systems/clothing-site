@@ -6,6 +6,10 @@ import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import SignInButton from './SignInButton'
 import CartDropdown from './CartDropdown'
+import CartContext from '../context/CartContext'
+import { useContext } from 'react'
+
+
 
 const navigation = {
   categories: [
@@ -31,7 +35,7 @@ const navigation = {
           id: 'clothing',
           name: 'Clothing',
           items: [
-            { name: '2-Piece', href: '#' },
+            { name: '2-Piece', href: '/product' },
             { name: '3-Piece', href: '#' },
           ],
         },
@@ -60,6 +64,7 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const {cartItems} = useContext(CartContext)
 
   const [open, setOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -392,7 +397,7 @@ export default function Navbar() {
 
                     <span className="ml-2 flex items-end">
                       <span className="text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                        0
+                        {cartItems.length}
                       </span>
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
