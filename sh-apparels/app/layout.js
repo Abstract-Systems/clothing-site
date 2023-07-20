@@ -1,9 +1,9 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
-import SessionProviders from './context/AuthProvider'
+import SessionProviders from '../context/AuthProvider'
 import Navbar from './components/Navbar'
 import Slider from './components/Slider'
-import ContextProvidex from './context/ContextProvidex'
+import { CartProvider } from '@/context/CartContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -16,13 +16,13 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
     <SessionProviders>
-      <ContextProvidex>
+      <CartProvider>
         <Navbar />
         {/* <Slider /> */}
         <div>
         {children}
         </div>  
-        </ContextProvidex>
+        </CartProvider>
     </SessionProviders>
         </body>
     </html>

@@ -1,13 +1,12 @@
 'use client'
 import React, { useState, useEffect, useContext } from 'react';
 import CartDropdown from './CartDropdown';
-import CartContext from '../context/CartContext';
+import { CartContext } from '@/context/CartContext';
 
 export default function ProductGrid() {
     const [results, setResults] = useState([]);
     const [cartOpen, setCartOpen] = useState(false);
-
-    const {cartItems, setCartItems} = useContext(CartContext)
+    const { cart, addToCart, removeFromCart } = useContext(CartContext);
   
     useEffect(() => {
       const fetchData = async () => {
@@ -23,14 +22,6 @@ export default function ProductGrid() {
       fetchData();
     }, []);
   
-    useEffect(() => {
-      console.log(cartItems);
-    }, [cartItems]);
-  
-    const addToCart = (product) => {
-      setCartItems((prevCartItems) => [...prevCartItems, product]);
-    };
-    console.log(cartItems)
   
 
   return (
@@ -49,7 +40,7 @@ export default function ProductGrid() {
             <br />
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4"
-              onClick={() => addToCart(product)}
+              onClick={() => addToCart({...product, quantity:1})}
             >
               Add to Cart
             </button>

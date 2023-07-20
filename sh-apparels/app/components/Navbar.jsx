@@ -3,10 +3,10 @@ import { Fragment, useState } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
+import { signIn, useSession, signOut } from 'next-auth/react'
 import SignInButton from './SignInButton'
 import CartDropdown from './CartDropdown'
-import CartContext from '../context/CartContext'
+import { CartContext } from '@/context/CartContext'
 import { useContext } from 'react'
 
 
@@ -64,7 +64,7 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-  const {cartItems} = useContext(CartContext)
+  const { cart } = useContext(CartContext);
 
   const [open, setOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -74,8 +74,7 @@ export default function Navbar() {
   };
 
 
-  const session = useSession();
-
+const { data: session, status } = useSession()
   return (
     <div className="bg-white">
       {/* Mobile menu */}
@@ -190,19 +189,19 @@ export default function Navbar() {
 
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
                   <div>
-                    {session ? (
-                      <div className="flow-root">
-                        <Link href="/api/auth/signin" className="-m-2 block p-2 font-medium text-gray-900">
-                          Sign in
-                        </Link>
-                      </div>
-                    ) : (
-                      <div className="flow-root">
-                        <Link href="/api/auth/signout" className="-m-2 block p-2 font-medium text-gray-900">
-                          Sign Out
-                        </Link>
-                      </div>
-                    )}
+                   {
+                      // if session give Sign out button with session.user.name
+                      // else give sign in button
+                      // Match the color of button to page
+                      session? 
+                        // user mail
+                        <>
+                        <p className="text-gray-900 pb-5"> {session.user.email} </p>
+                      
+                      <button onClick={signOut} className="bg-gray-900 text-white px-4 py-2 rounded-md">Sign Out</button>  </> : <button onClick={signIn} className="bg-gray-900 text-white px-4 py-2 rounded-md">Sign In</button>
+
+                   }
+
                   </div>
 
                   <div className="flow-root">
@@ -397,7 +396,7 @@ export default function Navbar() {
 
                     <span className="ml-2 flex items-end">
                       <span className="text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                        {cartItems.length}
+                        {cart.length}
                       </span>
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
