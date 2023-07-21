@@ -1,9 +1,9 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import image1 from '../assets/images/image1.webp';
-import image2 from '../assets/images/image2.webp';
-import image3 from '../assets/images/image3.jpg';
+import image1 from "@/assets/images/image1.webp"
+import image2 from "@/assets/images/image2.webp"
+import image3 from "@/assets/images/image3.jpg"
 
 const Slider = () => {
   const images = [
