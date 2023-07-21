@@ -17,7 +17,7 @@ export default function ProtectedContent() {
 
   );
   const router = useRouter();
-  const allowedEmails = ["hasaanahmad10023@gmail.com", "email"]
+  const allowedEmails = ["hasaanahmad10023@gmail.com", "haidersheikh1221@gmail.com", "email"]
 
   useEffect(() => {
     // Redirect to the root page when the user is not authenticated

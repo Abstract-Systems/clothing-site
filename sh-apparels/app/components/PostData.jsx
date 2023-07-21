@@ -5,7 +5,6 @@ import axios from 'axios';
 const PostData = () => {
   const [data, setData] = useState({
     name: '',
-    
   });
 
   const handleChange = (e) => {

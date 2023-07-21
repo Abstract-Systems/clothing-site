@@ -1,57 +1,48 @@
-import { MongoClient } from 'mongodb';
+import { connectDB } from 'util/db'; // Update the path to your db.js file
+import Product from 'util/product'; // Update the path to your Product.js file
 import { NextResponse } from 'next/server';
 
-// Move the URI definition outside the functions
-const URI = process.env.MONGODB_URI;
+// Connect to the MongoDB cluster
+connectDB();
 
-export async function GET() {
+// Export the GET function as a named export
+export async function getProducts(req, res) {
+  if (req.method === 'GET') {
     try {
-        // Connect to the MongoDB cluster
-        const client = await MongoClient.connect(URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        // taking query from the url
-        const query = { };
-        // Make the appropriate DB calls
+      // Taking query from the URL
+      const query = {};
 
-        const db = client.db('clothing-site');
-        const collection = db.collection('products');
-        const data = await collection.find(query).toArray();
+      // Make the appropriate DB calls
+      const data = await Product.find(query);
 
-        client.close();
-
-        return NextResponse.json(data);
+      return res.json(data);
     } catch (error) {
-        console.error('Error connecting to MongoDB:', error);
-        return NextResponse.error('Internal Server Error', { status: 500 });
+      console.error('Error retrieving data from MongoDB:', error);
+      return NextResponse.error('Internal Server Error', { status: 500 });
     }
+  } else {
+    return NextResponse.error('Method Not Allowed', { status: 405 });
+  }
 }
 
-export async function POST(request) {
+// Export the POST function as a named export
+export async function postProduct(req, res) {
+  if (req.method === 'POST') {
     try {
-        const client = await MongoClient.connect(URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+      // Assuming the incoming request has JSON data in the body
+      const requestData = req.body;
 
-        const db = client.db('clothing-site');
-        const collection = db.collection('products');
+      // Insert the new data into the database
+      const result = await Product.create(requestData);
 
-        // Assuming the incoming request has JSON data in the body
-        const requestData = await request.json();
-
-        // Insert the new data into the database
-        const result = await collection.insertOne(requestData);
-
-        client.close();
-
-        // Return a success response with the inserted data
-        return NextResponse.json({ success: true, insertedId: result.insertedId });
+      // Return a success response with the inserted data
+      return res.json({ success: true, insertedId: result._id });
     } catch (error) {
-        console.error('Error connecting to MongoDB:', error);
-        // If there's an error, return a 500 status with an empty response
-        return NextResponse.error('Internal Server Error', { status: 500 });
+      console.error('Error inserting data into MongoDB:', error);
+      // If there's an error, return a 500 status with an empty response
+      return NextResponse.error('Internal Server Error', { status: 500 });
     }
+  } else {
+    return NextResponse.error('Method Not Allowed', { status: 405 });
+  }
 }
-
