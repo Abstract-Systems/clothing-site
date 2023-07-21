@@ -1,10 +1,9 @@
-// components/ProtectedContent.js
 "use client"
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import Sidebar from '../components/AdminSidebar';
+import Sidebar from './AdminSidebar';
 
 export default function ProtectedContent() {
   const { data: session, status } = useSession(
