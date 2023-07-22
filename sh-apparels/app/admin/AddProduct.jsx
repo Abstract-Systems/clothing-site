@@ -3,16 +3,19 @@ import { useDropzone } from 'react-dropzone';
 import { FiFile } from 'react-icons/fi';
 import { FaTimes } from 'react-icons/fa';
 
+
+
 export const AddProduct = () => {
   const [title, setTitle] = useState('');
   const [productDetails, setProductDetails] = useState('');
+  const [slug, setSlug] = useState('');
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
   const [images, setImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
+ 
 
   const categories = ['Electronics', 'Clothing', 'Accessories', 'Home', 'Beauty'];
-
 
   const onDrop = (acceptedFiles) => {
     setImages((prevImages) => prevImages.concat(acceptedFiles));
@@ -23,6 +26,11 @@ export const AddProduct = () => {
   const removeImage = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
+const handleSubmit = ()=>{
+  
+}
+  
+
 
   return (
     <div className="p-4">
@@ -49,6 +57,18 @@ export const AddProduct = () => {
           className="p-2 mt-1 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           value={productDetails}
           onChange={(e) => setProductDetails(e.target.value)}
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="slug" className="block text-sm font-medium text-gray-700">
+          slug
+        </label>
+        <input
+          id="slug"
+          rows="4"
+          className="p-2 mt-1 border focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          value={slug}
+          onChange={(e) => setSlug(e.target.value)}
         />
       </div>
       <div className="mb-4">
@@ -123,7 +143,7 @@ export const AddProduct = () => {
       </div>
       <button
         className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        // onClick={}
+        onClick={handleSubmit}
       >
         Add Product
       </button>
