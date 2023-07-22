@@ -1,22 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { AddProduct } from './AddProduct';
+import ManageCategories from './ManageCategories';
 
 const Sidebar = () => {
   const [activeOption, setActiveOption] = useState(1);
-  useEffect(() => {
-    const handleKeyPress = (event) => {
-      const key = event.key;
-      if (parseInt(key) >= 1 && parseInt(key) <= 4) {
-        setActiveOption(parseInt(key));
-      }
-    };
-
-    document.addEventListener('keypress', handleKeyPress);
-
-    return () => {
-      document.removeEventListener('keypress', handleKeyPress);
-    };
-  }, []);
 
   // Helper function to render the content based on activeOption
   const renderContent = () => {
@@ -36,7 +23,7 @@ const Sidebar = () => {
 
   return (
     <div className="flex">
-      <div className="bg-gray-800 text-white w-1/6 py-8 px-4">
+      <div className="bg-gray-800 text-white h-screen w-1/6 py-8 px-4">
         <h2 className="text-xl font-bold mb-4">Sidebar</h2>
         <ul>
           <li

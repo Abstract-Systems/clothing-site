@@ -6,7 +6,7 @@ const productSchema = new Schema({
         type: String,
         required: [true, 'Product name is required'],
     },
-    Description:{
+    description:{
         type: String,
         required: [true, 'Product description is required'],
     },
@@ -21,7 +21,7 @@ const productSchema = new Schema({
         required: [true, 'Product price is required'],
     },
     images: {
-        type: String,
+        type: [String],
         required: [true, 'Product image is required'],
     },
     category: {

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { FiFile } from 'react-icons/fi';
-import { FaTimes } from 'react-icons/fa';
+import ImageUploader from '../components/ImageDropdown';
 import axios from 'axios';
+import { LiaCalendarPlusSolid } from 'react-icons/lia';
+import path from 'path';
 
 
 
@@ -14,40 +14,117 @@ export const AddProduct = () => {
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
   const [images, setImages] = useState([]);
-const [uploadedImages, setUploadedImages] = useState([]); // New state to track uploaded images
-
   const [selectedCategory, setSelectedCategory] = useState('');
 
+// reading txt file from local storage and converting it to array
+  const categories = fs.readFileSync(path.join(process.cwd(), 'categories.txt'), 'utf8').split('\n');
 
-  const categories = ['Electronics', 'Clothing', 'Accessories', 'Home', 'Beauty'];
+  
 
-  const onDrop = (acceptedFiles) => {
-    setImages((prevImages) => prevImages.concat(acceptedFiles));
+  
+  console.log(catergories)
+  
+  const handleImageUpload = (imageUrls) => {
+    setImages(imageUrls);
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const [uploadStatus, setUploadStatus] = useState([]);
 
-  const removeImage = (index) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-  };
-
-
-  const handleImageUpload = async (file) => {
+  const handleUploadButton = async () => {
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', 'scctmgml');
-      formData.append('cloud_name', 'dcpuaddce');
-      const response = await axios.post(
-        'https://api.cloudinary.com/v1_1/dcpuaddce/image/upload',
-        formData
-      );
-      setUploadedImages((prevImages) => [...prevImages, response.data.public_id]);
+      // Get all files from the input of type file
+      const acceptedFiles = document.querySelector('[type=file]').files;
+
+      // Create an array to store upload status for each file
+      const uploadStatusArray = [];
+
+      for (let i = 0; i < acceptedFiles.length; i++) {
+        const file = acceptedFiles[i];
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'scctmgml');
+        formData.append('cloud_name', 'dcpuaddce');
+
+        try {
+          const response = await axios.post(
+            'https://api.cloudinary.com/v1_1/dcpuaddce/image/upload',
+            formData
+          );
+
+          if (response.status === 200) {
+            // If successfully uploaded, add the URL to the images array
+            const imageUrl = response.data.secure_url;
+            setImages((prevImages) => [...prevImages, imageUrl]);
+            console.log(imageUrl);
+            // Update the upload status for this file to "success"
+            uploadStatusArray.push({ file: file.name, status: 'success' });
+          }
+        } catch (error) {
+          // If there's an error in uploading, update the status to "failure"
+          uploadStatusArray.push({ file: file.name, status: 'failure' });
+          console.log(error);
+        }
+      }
+
+      // Update the upload status state with the new array
+      setUploadStatus(uploadStatusArray);
     } catch (error) {
       console.log(error);
     }
   };
 
+  // Function to display the uploaded files with their status
+  const renderUploadedFiles = () => {
+    // Combine the images array with the uploadStatus array
+    const allFiles = [...images, ...uploadStatus];
+  
+    return allFiles.map((item, index) => (
+      <div key={index} className="flex items-center mb-2">
+        {item.status === 'success' ? (
+          <span className="text-green-500 mr-2">
+            <LiaCalendarPlusSolid />
+          </span>
+        ) : (
+          <span className="text-red-500 mr-2">X</span>
+        )}
+        <span>{item.file}</span>
+      </div>
+    ));
+  };
+
+  const handleSubmit = async () => {
+  
+  
+    // Convert the images array to a JSON string and add it to the formData
+  
+    try {
+      const response = await axios.post('http://localhost:3000/api/getallproducts', {
+        title,
+        description: productDetails,
+        slug,
+        price,
+        images,
+        category: selectedCategory,
+        stock,
+
+      });
+      console.log(response);
+      if (response.status === 200) {
+        alert('Product added successfully');
+      }
+      // Reset the form
+      setTitle('');
+      setProductDetails('');
+      setSlug('');
+      setPrice('');
+      setImages([]);
+      setSelectedCategory('');
+      setStock('');
+      setUploadStatus([]); // Clear the upload status
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="p-4">
@@ -131,45 +208,23 @@ const [uploadedImages, setUploadedImages] = useState([]); // New state to track 
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Images</label>
-        <div
-          {...getRootProps()}
-          className={`mt-4 p-8 border border-dashed rounded-md cursor-pointer ${isDragActive ? 'border-blue-500' : 'border-gray-300'
-            }`}
+        <input type="file" multiple name="file" id="" />
+        <button
+          onClick={handleUploadButton}
+          className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
-          <input {...getInputProps()} />
-          <p className="text-gray-500 text-sm">
-            {isDragActive
-              ? 'Drop the files here...'
-              : 'Drag and drop files here, or click to select files'}
-          </p>
-        </div>
-        <div className="mt-4">
-          {images.map((file, index) => (
-            <div key={file.name} className="flex items-center">
-              {uploadedImages.includes(file.name) ? (
-                <FiCheck className="text-green-500 mr-2" /> // Assuming you have an icon named FiCheck for the tick
-              ) : (
-                <FiFile className="text-blue-500 mr-2" />
-              )}
-              <span className="text-sm">{file.name}</span>
-              <button
-                className="px-2 ml-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600"
-                onClick={()=>handleImageUpload(file)}
-              >
-                Upload
-              </button>
-              <FaTimes
-                className="text-red-600 ml-2 cursor-pointer"
-                onClick={() => removeImage(index)}
-              />
-            </div>
-          ))}
-        </div>
+          Upload
+        </button>
       </div>
+
+      {/* Display uploaded files */}
+      <div className="mb-4">{renderUploadedFiles()}</div>
+
+      {/* <ImageUploader onUploadComplete={handleImageUpload} /> */}
+
       <button
         className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-      // onClick={handleSubmit}
+        onClick={handleSubmit}
       >
         Add Product
       </button>

@@ -3,11 +3,11 @@ import { NextResponse } from "next/server";
 import Product from "@/models/Product";
 
 export async function POST(request){
-    const {title, Description, slug, price, images, category, stock} = await request.json();
+    const {title, description, slug, price, images, category, stock} = await request.json();
     await connectDB();
     Product.create({
         title,
-        Description,
+        description,
         slug,
         price,
         images,
