@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FiFile } from 'react-icons/fi';
 import { FaTimes } from 'react-icons/fa';
+import axios from 'axios';
+
 
 
 
@@ -12,8 +14,10 @@ export const AddProduct = () => {
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
   const [images, setImages] = useState([]);
+const [uploadedImages, setUploadedImages] = useState([]); // New state to track uploaded images
+
   const [selectedCategory, setSelectedCategory] = useState('');
- 
+
 
   const categories = ['Electronics', 'Clothing', 'Accessories', 'Home', 'Beauty'];
 
@@ -26,10 +30,23 @@ export const AddProduct = () => {
   const removeImage = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
-const handleSubmit = ()=>{
-  
-}
-  
+
+
+  const handleImageUpload = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'scctmgml');
+      formData.append('cloud_name', 'dcpuaddce');
+      const response = await axios.post(
+        'https://api.cloudinary.com/v1_1/dcpuaddce/image/upload',
+        formData
+      );
+      setUploadedImages((prevImages) => [...prevImages, response.data.public_id]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 
   return (
@@ -117,9 +134,8 @@ const handleSubmit = ()=>{
         <label className="block text-sm font-medium text-gray-700">Images</label>
         <div
           {...getRootProps()}
-          className={`mt-4 p-8 border border-dashed rounded-md cursor-pointer ${
-            isDragActive ? 'border-blue-500' : 'border-gray-300'
-          }`}
+          className={`mt-4 p-8 border border-dashed rounded-md cursor-pointer ${isDragActive ? 'border-blue-500' : 'border-gray-300'
+            }`}
         >
           <input {...getInputProps()} />
           <p className="text-gray-500 text-sm">
@@ -131,8 +147,18 @@ const handleSubmit = ()=>{
         <div className="mt-4">
           {images.map((file, index) => (
             <div key={file.name} className="flex items-center">
-              <FiFile className="text-blue-500 mr-2" />
+              {uploadedImages.includes(file.name) ? (
+                <FiCheck className="text-green-500 mr-2" /> // Assuming you have an icon named FiCheck for the tick
+              ) : (
+                <FiFile className="text-blue-500 mr-2" />
+              )}
               <span className="text-sm">{file.name}</span>
+              <button
+                className="px-2 ml-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600"
+                onClick={()=>handleImageUpload(file)}
+              >
+                Upload
+              </button>
               <FaTimes
                 className="text-red-600 ml-2 cursor-pointer"
                 onClick={() => removeImage(index)}
@@ -143,7 +169,7 @@ const handleSubmit = ()=>{
       </div>
       <button
         className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        onClick={handleSubmit}
+      // onClick={handleSubmit}
       >
         Add Product
       </button>
