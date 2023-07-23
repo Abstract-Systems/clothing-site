@@ -37,6 +37,32 @@ const productSchema = new Schema({
 
 const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 
+Product.findById = async function (productId) {
+  try {
+    return await this.findOne({ _id: productId });
+  } catch (error) {
+    throw new Error('Error fetching product:', error);
+  }
+};
+
+// Function to update a product by its _id
+Product.updateStockById = async function (productId, newStockValue) {
+  try {
+    return await this.findByIdAndUpdate(productId, { stock: newStockValue }, { new: true });
+  } catch (error) {
+    throw new Error('Error updating product:', error);
+  }
+};
+
+// Function to delete a product by its _id
+Product.deleteProductById = async function (productId) {
+  try {
+    return await this.findByIdAndDelete(productId);
+  } catch (error) {
+    throw new Error('Error deleting product:', error);
+  }
+};
+
 
 export default Product;
 

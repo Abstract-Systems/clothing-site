@@ -1,6 +1,7 @@
 import connectDB from "@/libs/connectDB";
 import { NextResponse } from "next/server";
 import Product from "@/models/Product";
+import handler from "./[productId]/route";
 
 export async function POST(request){
     const {title, description, slug, price, images, category, stock} = await request.json();
@@ -24,5 +25,6 @@ export async function GET(){
     return NextResponse.json(products);
 
 }
+
 
 
