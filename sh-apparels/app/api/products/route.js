@@ -1,7 +1,6 @@
 import connectDB from "@/libs/connectDB";
 import { NextResponse } from "next/server";
 import Product from "@/models/Product";
-import handler from "./[productId]/route";
 
 export async function POST(request){
     const {title, description, slug, price, images, category, stock} = await request.json();
@@ -24,6 +23,16 @@ export async function GET(){
     const products = await Product.find({});
     return NextResponse.json(products);
 
+}
+export async function DELETE(request){
+    await connectDB();
+    await Product.findOneAndDelete(request);
+    return NextResponse.json({message: "Product deleted successfully"})
+}
+export async function PUT(id, updateQuery){
+    await connectDB();
+    await Product.findOneAndUpdate(id, updateQuery,{new: true});
+    return NextResponse.json({message: "Product updated successfully"})
 }
 
 

@@ -23,36 +23,40 @@ const ManageProducts = () => {
 
   // Function to update product stock
   const handleUpdateStock = async (productId, newStockValue) => {
-    try {
-      const response = await axios.patch(`http://localhost:3000/api/products/${productId}`, {
-        stock: newStockValue,
-      });
+  try {
+    const response = await axios.patch(
+      `/api/products/${productId}`,
+      { stock: newStockValue },
+      { headers: { "Content-Type": "application/json" } }
+    );
 
-      if (response.status === 200) {
-        // If the update is successful, update the state with the new stock value
-        setProducts((prevProducts) =>
-          prevProducts.map((product) =>
-            product._id === productId ? { ...product, stock: newStockValue } : product
-          )
-        );
-      } else {
-        console.error('Failed to update stock:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error updating stock:', error);
+    if (response.status === 200) {
+      setProducts((prevProducts) =>
+        prevProducts.map((product) => {
+          if (product._id === productId) {
+            return { ...product, stock: newStockValue };
+          }
+          return product;
+        })
+      );
     }
-  };
-
+  } catch (error) {
+    console.error('Error updating stock:', error);
+  }
+};
+  
   // Function to delete a product
   const handleDeleteProduct = async (productId) => {
     try {
-      const response = await axios.delete(`http://localhost:3000/api/products/${productId}`);
+      const response = await axios.delete("api/products", {
+        "_id": productId
 
+        });
       if (response.status === 200) {
-        // If the delete is successful, update the state by removing the deleted product
-        setProducts((prevProducts) => prevProducts.filter((product) => product._id !== productId));
-      } else {
-        console.error('Failed to delete product:', response.statusText);
+        alert("Product deleted successfully");
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product._id !== productId)
+        );
       }
     } catch (error) {
       console.error('Error deleting product:', error);
