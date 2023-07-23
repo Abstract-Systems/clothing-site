@@ -16,13 +16,7 @@ export const AddProduct = () => {
   const [images, setImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
 
-// reading txt file from local storage and converting it to array
-  const categories = fs.readFileSync(path.join(process.cwd(), 'categories.txt'), 'utf8').split('\n');
-
-  
-
-  
-  console.log(catergories)
+  const categories = ["Hello"]
   
   const handleImageUpload = (imageUrls) => {
     setImages(imageUrls);
@@ -98,7 +92,7 @@ export const AddProduct = () => {
     // Convert the images array to a JSON string and add it to the formData
   
     try {
-      const response = await axios.post('http://localhost:3000/api/getallproducts', {
+      const response = await axios.post('http://localhost:3000/api/products', {
         title,
         description: productDetails,
         slug,
