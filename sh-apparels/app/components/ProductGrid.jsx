@@ -11,9 +11,9 @@ export default function ProductGrid() {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await fetch('https://rickandmortyapi.com/api/character');
+          const response = await fetch('http://localhost:3000/api/getallproducts');
           const data = await response.json();
-          setResults(data.results);
+          setResults(data);
         } catch (error) {
           console.log('Error fetching products:', error);
         }
@@ -29,14 +29,14 @@ export default function ProductGrid() {
       {results.map((product) => (
         <div key={product.id} className="border border-gray-200 rounded-md p-4 hover:shadow-lg">
           <div className="flex justify-center">
-            <img src={product.image} alt={product.name} className="w-1/2" />
+            <img src={product.images} alt={product.name} className="w-1/2" />
           </div>
           <div className="text-center">
-            <h3 className="text-lg font-semibold">{product.name}</h3>
-            <p className="text-sm text-gray-500">{product.gender}</p>
-            <span className="text-sm text-gray-500">{product.species}</span>
+            <h3 className="text-lg font-semibold">{product.title}</h3>
+            <p className="text-sm text-gray-500">{product.price}</p>
+            <span className="text-sm text-gray-500">{product.stock}</span>
             <br />
-            <span className="text-sm text-gray-500">{product.status}</span>
+            <span className="text-sm text-gray-500">{product.category}</span>
             <br />
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4"
