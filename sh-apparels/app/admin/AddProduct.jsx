@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import ImageUploader from '../components/ImageDropdown';
 import axios from 'axios';
 import { LiaCalendarPlusSolid } from 'react-icons/lia';
-import path from 'path';
 
 
 
@@ -15,8 +14,8 @@ export const AddProduct = () => {
   const [stock, setStock] = useState('');
   const [images, setImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
-
-  const categories = ["Hello"]
+// Make Caterogies Array
+  const categories = ["3 Piece", "2 Piece", "Alkaram"]
   
   const handleImageUpload = (imageUrls) => {
     setImages(imageUrls);
