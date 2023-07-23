@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ImageUploader from '../components/ImageDropdown';
 import axios from 'axios';
 import { LiaCalendarPlusSolid } from 'react-icons/lia';
@@ -14,8 +14,26 @@ export const AddProduct = () => {
   const [stock, setStock] = useState('');
   const [images, setImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [categories, setCategories] = useState([]); 
 // Make Caterogies Array
-  const categories = ["3 Piece", "2 Piece", "Alkaram"]
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/categories');
+        const data = await response.json();
+        const categoryNames = data.map((category) => category.name);
+        setCategories(categoryNames);
+      } catch (error) {
+        console.log('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+  
+  
+
   
   const handleImageUpload = (imageUrls) => {
     setImages(imageUrls);

@@ -17,3 +17,12 @@ export async function POST(request){
     await Category.save()
     return NextResponse.json({message: "Category created successfully"})
 }
+
+// Delete Category API 
+export async function DELETE(request){
+    await connectDB();
+    // 
+    await Categories.findOneAndDelete(request)
+    return NextResponse.json({message: "Category deleted successfully"})
+}
+    

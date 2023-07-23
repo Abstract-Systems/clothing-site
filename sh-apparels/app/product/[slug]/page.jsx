@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation'
+import { useParams } from 'next/navigation';
 
 
 const ProductPage = () => {
@@ -12,21 +13,14 @@ const ProductPage = () => {
     img3: 'https://static.nike.com/a/images/f_auto,b_rgb:f5f5f5,w_440/44fc74b6-0553-4eef-a0cc-db4f815c9450/scarpa-da-running-su-strada-invincible-3-xk5gLh.png',
     img4: 'https://static.nike.com/a/images/f_auto,b_rgb:f5f5f5,w_440/d3eb254d-0901-4158-956a-4610180545e5/scarpa-da-running-su-strada-invincible-3-xk5gLh.png',
   });
-
+const { slug } = useParams();
   const [activeImg, setActiveImage] = useState(images.img1);
   const [amount, setAmount] = useState(1);
 
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-        redirect('/api/auth/signin?callbackUrl=/client')
-    }
-})
-console.log(session?.user?.name)
 
   return (
     <div>
-      {session ? (
+      {slug}
         <div className='flex flex-col justify-between lg:flex-row gap-16 lg:items-center'>
           <div className='flex flex-col gap-6 lg:w-2/4'>
             <img
@@ -55,7 +49,7 @@ console.log(session?.user?.name)
             </div>
           </div>
         </div>
-      ) : (
+    
         <div>
           <p>Please log in to view this page.</p>
           <div>
@@ -63,7 +57,6 @@ console.log(session?.user?.name)
           <li><Link className='"bg-blue-800 p-4 border-2' href="/api/auth/signin">Sign In</Link></li>
           </div>
         </div>
-      )}
     </div>
   );
 };

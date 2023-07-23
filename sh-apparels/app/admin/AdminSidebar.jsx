@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AddProduct } from './AddProduct';
 import ManageCategories from './ManageCategories';
 import ManageProducts from './ManageProducts';
+import { Orders } from './Orders';
 
 const Sidebar = () => {
   const [activeOption, setActiveOption] = useState(1);
