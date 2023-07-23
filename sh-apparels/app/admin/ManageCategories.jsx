@@ -1,10 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const ManageCategories = () => {
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState('');
 
-  const handleAddCategory = () => {
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/categories');
+      const data = await response.json();
+
+      for (let i = 0; i < data.length; i++) {
+        setCategories((prevCategories) => [...prevCategories, data[i].name]);
+      }
+
+    } catch (error) {
+      console.log('Error fetching categories:', error);
+    }
+  };
+
+
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+
+ 
+
+
+
+  const handleAddCategory = async () => {
     if (newCategory.trim() === '') return;
 
     // Check if the category already exists
@@ -13,11 +39,44 @@ const ManageCategories = () => {
       return;
     }
 
-    setCategories([...categories, newCategory]);
-    setNewCategory('');
+    try {
+
+
+      const body = { name: newCategory };
+      console.log(newCategory)
+      const response = await axios.post('http://localhost:3000/api/categories', body);
+      console.log(response)
+      if(response.status === 200){
+        alert('Category added successfully!');
+      // reseting the state
+      setCategories([]);
+      setNewCategory('');
+      }
+
+      setCategories([...categories, newCategory]);
+      setNewCategory('');
+    } catch (error) {
+      console.log('Error adding category:', error);
+    }
+
   };
 
-  const handleDeleteCategory = (categoryToDelete) => {
+  const handleDeleteCategory =async (categoryToDelete) => {
+    const body = { name: categoryToDelete}
+    try {
+      // delete by ID
+      console.log(body)
+      const response = await axios.delete('http://localhost:3000/api/categories', body );
+      console.log(response)
+      if(response.status === 200){
+        alert('Category deleted successfully!');
+      // reseting the state
+      setCategories([]);
+      setNewCategory('');
+      }
+    } catch (error) {
+      console.log('Error deleting category:', error);
+    }
     setCategories(categories.filter((category) => category !== categoryToDelete));
   };
 
