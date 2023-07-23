@@ -29,11 +29,28 @@ export async function DELETE(request){
     await Product.findOneAndDelete(request);
     return NextResponse.json({message: "Product deleted successfully"})
 }
-export async function PUT(id, updateQuery){
-    await connectDB();
-    await Product.findOneAndUpdate(id, updateQuery,{new: true});
-    return NextResponse.json({message: "Product updated successfully"})
-}
+
+export async function PUT(request) {
+    const data = await request.json();
+    const { _id } = data;
+    console.log(_id);
+    console.log(data);
+
+    try {
+      await connectDB(); // Make sure this function connects to the MongoDB database
+      const updatedProduct = await Product.findByIdAndUpdate(_id, data, { new: true });
+      
+      if (!updatedProduct) {
+        return NextResponse.json({ message: "Product not found" }, 404);
+      }
+  
+      return NextResponse.json({ message: "Product updated successfully", updatedProduct });
+    } catch (error) {
+      // Handle the error appropriately, e.g., logging or sending an error response
+      console.error(error);
+      return NextResponse.json({ message: "Error updating product", error }, 500);
+    }
+  }
 
 
 

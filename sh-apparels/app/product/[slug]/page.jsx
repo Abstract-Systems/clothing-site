@@ -13,7 +13,7 @@ const ProductPage = () => {
     img3: 'https://static.nike.com/a/images/f_auto,b_rgb:f5f5f5,w_440/44fc74b6-0553-4eef-a0cc-db4f815c9450/scarpa-da-running-su-strada-invincible-3-xk5gLh.png',
     img4: 'https://static.nike.com/a/images/f_auto,b_rgb:f5f5f5,w_440/d3eb254d-0901-4158-956a-4610180545e5/scarpa-da-running-su-strada-invincible-3-xk5gLh.png',
   });
-const { slug } = useParams();
+  const { slug } = useParams();
   const [activeImg, setActiveImage] = useState(images.img1);
   const [amount, setAmount] = useState(1);
 

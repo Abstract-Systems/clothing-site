@@ -24,13 +24,17 @@ const ManageProducts = () => {
   // Function to update product stock
   const handleUpdateStock = async (productId, newStockValue) => {
   try {
-    const response = await axios.patch(
-      `/api/products/${productId}`,
-      { stock: newStockValue },
-      { headers: { "Content-Type": "application/json" } }
-    );
+    // Make PUT request to update stock
+    //  await Product.findOneAndUpdate(filter, updateQuery,{new: true});
+    // Make request body accordingly
+console.log(productId, newStockValue)
 
-    if (response.status === 200) {
+    const response = await axios.put("api/products",
+         {"_id": productId,
+          "stock": newStockValue}
+    )
+    if(response.status===200){
+      alert("Stock updated successfully");
       setProducts((prevProducts) =>
         prevProducts.map((product) => {
           if (product._id === productId) {
