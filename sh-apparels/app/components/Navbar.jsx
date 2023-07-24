@@ -54,7 +54,7 @@ const navigation = {
     },
   ],
   pages: [
-    { name: 'Company', href: '#' },
+    { name: 'Home Page', href: '/' },
     { name: 'Stores', href: '#' },
   ],
 }

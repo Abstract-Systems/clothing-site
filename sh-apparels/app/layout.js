@@ -2,9 +2,9 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import SessionProviders from '../context/AuthProvider'
 import Navbar from './components/Navbar'
-import Slider from './components/Slider'
 import { CartProvider } from '@/context/CartContext'
 const inter = Inter({ subsets: ['latin'] })
+import { DataContextProvider } from '@/context/DataContext'
 
 export const metadata = {
   title: 'Create Next App',
@@ -16,6 +16,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
     <SessionProviders>
+      <DataContextProvider>
       <CartProvider>
         <Navbar />
         {/* <Slider /> */}
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
         {children}
         </div>  
         </CartProvider>
+        </DataContextProvider>
     </SessionProviders>
         </body>
     </html>

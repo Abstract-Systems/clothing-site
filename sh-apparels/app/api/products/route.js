@@ -43,7 +43,7 @@ export async function PUT(request) {
       if (!updatedProduct) {
         return NextResponse.json({ message: "Product not found" }, 404);
       }
-  
+      
       return NextResponse.json({ message: "Product updated successfully", updatedProduct });
     } catch (error) {
       // Handle the error appropriately, e.g., logging or sending an error response
