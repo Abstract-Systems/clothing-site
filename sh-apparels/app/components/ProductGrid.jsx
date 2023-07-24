@@ -1,32 +1,33 @@
 'use client'
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 import CartDropdown from './CartDropdown';
 import { CartContext } from '@/context/CartContext';
 
 export default function ProductGrid() {
-    const [results, setResults] = useState([]);
-    const [cartOpen, setCartOpen] = useState(false);
-    const { cart, addToCart, removeFromCart } = useContext(CartContext);
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await fetch('http://localhost:3000/api/products');
-          const data = await response.json();
-          setResults(data);
-        } catch (error) {
-          console.log('Error fetching products:', error);
-        }
-      };
-  
-      fetchData();
-    }, []);
-  
-  
+  const [results, setResults] = useState([]);
+  const [cartOpen, setCartOpen] = useState(false);
+  const { cart, addToCart, removeFromCart } = useContext(CartContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/products');
+        const data = await response.json();
+        setResults(data);
+      } catch (error) {
+        console.log('Error fetching products:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Store the fetched data in cache memory for efficient retrieval
+  const cachedResults = useMemo(() => results, [results]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {results.map((product) => (
+      {cachedResults.map((product) => (
         <div key={product.id} className="border border-gray-200 rounded-md p-4 hover:shadow-lg">
           <div className="flex justify-center">
             <img src={product.images} alt={product.name} className="w-1/2" />
