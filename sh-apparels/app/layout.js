@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-    <SessionProviders>
+    <SessionProviders >
       <CartProvider>
         <Navbar />
         {/* <Slider /> */}
@@ -27,3 +27,4 @@ export default function RootLayout({ children }) {
     </html>
   )
 }
+

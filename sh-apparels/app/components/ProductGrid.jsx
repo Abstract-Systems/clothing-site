@@ -2,14 +2,24 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
 import CartDropdown from './CartDropdown';
 import { CartContext } from '@/context/CartContext';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Link from 'next/link';
 
 export default function ProductGrid() {
   const [results, setResults] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
   const { cart, addToCart } = useContext(CartContext);
-
+  const notify = () => toast.success('Product has been added to cart 🚀', {
+    position: "bottom-right",
+    autoClose: 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -28,6 +38,7 @@ export default function ProductGrid() {
   const cachedResults = useMemo(() => results, [results]);
 
   return (
+    <div>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {cachedResults.map((product) => (
         <div key={product._id} className="border border-gray-200 rounded-md p-4 hover:shadow-lg">
@@ -49,13 +60,19 @@ export default function ProductGrid() {
           </Link>
           <div className="text-center">
 
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4"
-              onClick={() => addToCart({ ...product, quantity: 1 })}
+          <button
+             //if stock is zero then disable the button
+              disabled={product.stock === 0}
+              onClick={() => {
+                addToCart({ ...product, quantity: 1 });
+                notify(); // Call the notify function when the product is added to the cart
+              }}
+              className='bg-violet-800 disabled:bg-violet-200 text-white font-semibold py-3 px-16 mx-4 rounded-xl h-full'
             >
-            
-              Add to Cart
+              {product.stock === 0 ? 'Out of stock' : 'Add to cart'}
+              
             </button>
+           
           </div>
         </div>
       ))}
@@ -63,5 +80,19 @@ export default function ProductGrid() {
       {/* Render the CartDropdown component and pass the cartOpen state */}
       {cartOpen && <CartDropdown setOpen={setCartOpen} />}
     </div>
+    <ToastContainer
+              position="bottom-right"
+              autoClose={1000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
+    </div>
+    
   );
 }
