@@ -6,16 +6,16 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
+  // Retrieve cart from localStorage on component mount
   useEffect(() => {
-    // Retrieve cart from localStorage on component mount
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       setCart(JSON.parse(storedCart));
     }
   }, []);
 
+  // Update localStorage whenever the cart state changes
   useEffect(() => {
-    // Save cart to localStorage whenever it changes
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
@@ -28,6 +28,7 @@ export const CartProvider = ({ children }) => {
       // Otherwise, add the new item to the cart with a quantity of 1
       setCart((prevCart) => [...prevCart, { ...item, quantity: 1 }]);
     }
+    
   };
 
   const removeFromCart = (itemToRemove) => {
@@ -56,8 +57,9 @@ export const CartProvider = ({ children }) => {
       )
     );
   };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart,increaseQuantity,decreaseQuantity }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, increaseQuantity, decreaseQuantity }}>
       {children}
     </CartContext.Provider>
   );
