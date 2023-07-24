@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useContext } from 'react';
@@ -14,14 +14,23 @@ const ProductPage = () => {
     img4: 'https://static.nike.com/a/images/f_auto,b_rgb:f5f5f5,w_440/d3eb254d-0901-4158-956a-4610180545e5/scarpa-da-running-su-strada-invincible-3-xk5gLh.png',
   });
   const { slug } = useParams();
+  const [results, setResults] = useState([]);
+
   const [activeImg, setActiveImage] = useState(images.img1);
   const [amount, setAmount] = useState(1);
   const { data,setData } = useContext(DataContext);
+
+  const cachedResults = useMemo(() => results, [results]);
   const product = data.find((product) => product.slug === slug);
+  console.log(product);
   
   if (!product) {
     // fetch product
-
+    cachedResults.map((product) => {
+      if (product.slug === slug) {
+        return product;
+      }
+    });
     return <p>Loading...</p>;
   }
 
