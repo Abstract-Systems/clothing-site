@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { CartContext } from '@/context/CartContext';
@@ -11,48 +11,23 @@ const ProductPage = () => {
   const [images, setImages] = useState({});
 
   const { slug } = useParams();
-  const [activeImg, setActiveImage] = useState();
+  const [results, setResults] = useState([]);
+
+  const [activeImg, setActiveImage] = useState(images.img1);
   const [amount, setAmount] = useState(1);
-  const [data, setData] = useState([]);
+  const { data,setData } = useContext(DataContext);
+
+  const cachedResults = useMemo(() => results, [results]);
   const product = data.find((product) => product.slug === slug);
-  const { cart, addToCart } = useContext(CartContext);
-  const notify = () => toast.success('Product has been added to cart 🚀', {
-    position: "bottom-right",
-    autoClose: 1000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-  })
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/api/products');
-        const data = await response.json();
-        setData(data);
-        const product = data.find((product) => product.slug === slug);
-        setImages(product.images);
-        setActiveImage(product.images[0]);
-
-      } catch (error) {
-        console.log('Error fetching products:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-
+  
   if (!product) {
-    return (
-      <div>
-        <p>Loading...</p>
-        <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24"></svg>
-      </div>
-    );
+    // fetch product
+    cachedResults.map((product) => {
+      if (product.slug === slug) {
+        return product;
+      }
+    });
+    return <p>Loading...</p>;
   }
 
   return (
