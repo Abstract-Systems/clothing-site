@@ -1,9 +1,9 @@
 "use client"
 import { useState } from 'react';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation'
 import { useParams } from 'next/navigation';
+import { useContext } from 'react';
+import { DataContext } from '@/context/DataContext';
 
 
 const ProductPage = () => {
@@ -16,15 +16,23 @@ const ProductPage = () => {
   const { slug } = useParams();
   const [activeImg, setActiveImage] = useState(images.img1);
   const [amount, setAmount] = useState(1);
+  const { data,setData } = useContext(DataContext);
+  const product = data.find((product) => product.slug === slug);
+  
+  if (!product) {
+    // fetch product
+
+    return <p>Loading...</p>;
+  }
+
 
 
   return (
     <div>
-      {slug}
         <div className='flex flex-col justify-between lg:flex-row gap-16 lg:items-center'>
           <div className='flex flex-col gap-6 lg:w-2/4'>
             <img
-              src={activeImg}
+              src={product.images[0]}
               alt=''
               className='w-[500px] h-[500px] aspect-square object-cover rounded-xl justify-center'
             />
@@ -34,11 +42,11 @@ const ProductPage = () => {
           </div>
           <div className='flex flex-col gap-4 lg:w-2/4'>
             <div>
-              <span className=' text-violet-600 font-semibold'>Special Sneaker</span>
-              <h1 className='text-3xl font-bold'>Nike Invincible 3</h1>
+              <span className=' text-violet-600 font-semibold'></span>
+              <h1 className='text-3xl font-bold'>{product.title}</h1>
             </div>
-            <p className='text-gray-700'>Hello, I am description.</p>
-            <h6 className='text-2xl font-semibold'>$ 199.00</h6>
+            <p className='text-gray-700'>{product.description}</p>
+            <h6 className='text-2xl font-semibold'>PKR {product.price}</h6>
             <div className='flex flex-row items-center gap-12'>
               <div className='flex flex-row items-center'>
                 {/* Quantity buttons */}
