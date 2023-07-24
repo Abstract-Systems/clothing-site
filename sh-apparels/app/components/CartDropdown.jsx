@@ -112,7 +112,7 @@ export default function CartDropdown({ setOpen }) {
                                 <li key={product.id} className="flex py-6">
                                   <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                     <img
-                                      src={product.image}
+                                      src={product.images}
                                       alt={product.imageAlt}
                                       className="h-full w-full object-cover object-center"
                                     />
@@ -123,7 +123,7 @@ export default function CartDropdown({ setOpen }) {
                                       <div className="flex justify-between text-base font-medium text-gray-900">
                                         <h3>
                                           <a href={product.href}>
-                                            {product.name}
+                                            {product.title}
                                           </a>
                                         </h3>
                                         <p className="ml-4">{product.price}</p>
