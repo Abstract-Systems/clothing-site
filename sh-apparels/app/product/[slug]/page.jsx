@@ -1,60 +1,92 @@
 "use client"
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect, useMemo, useContext } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { CartContext } from '@/context/CartContext';
-import { useContext } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ProductPage = () => {
   const [images, setImages] = useState({});
-
   const { slug } = useParams();
+  const { cart, addToCart } = useContext(CartContext);
+  const [product, setProduct] = useState(null);
   const [results, setResults] = useState([]);
-
-  const [activeImg, setActiveImage] = useState(images.img1);
+  const [activeImg, setActiveImage] = useState(null);
   const [amount, setAmount] = useState(1);
-  const { data,setData } = useContext(DataContext);
 
-  const cachedResults = useMemo(() => results, [results]);
-  const product = data.find((product) => product.slug === slug);
-  
+
+  useEffect(() => {
+    // Check if the product is already in the results state
+    const existingProduct = results.find((product) => product.slug === slug);
+    if (existingProduct) {
+      setProduct(existingProduct);
+    } else {
+      // Fetch the product from the API if not already available in the results state
+      const fetchData = async () => {
+        try {
+          const response = await fetch('http://localhost:3000/api/products');
+          const data = await response.json();
+          setResults(data);
+          console.log(data) // Update the results state with fetched data
+          const product = data.find((product) => product.slug === slug);
+          setProduct(product);
+          setImages(product.images);
+        } catch (error) {
+          console.log('Error fetching products:', error);
+        }
+      };
+      fetchData();
+    }
+  }, []);
+
+  const notify = () => toast.success('Product has been added to cart 🚀', {
+    position: "bottom-right",
+    autoClose: 1000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  });
+
   if (!product) {
-    // fetch product
-    cachedResults.map((product) => {
-      if (product.slug === slug) {
-        return product;
-      }
-    });
     return <p>Loading...</p>;
   }
+  const handleThumbnailClick = (index) => {
+    const imageKeys = Object.keys(images);
+    if (imageKeys.length > index) {
+      setActiveImage(images[imageKeys[index]]);
+    }
+  };
+
 
   return (
     <div>
       <div className='flex flex-col justify-between lg:flex-row gap-16 lg:items-center'>
         <div className='flex flex-col pl-5 gap-6 lg:w-2/4'>
           <img
-            src={activeImg} // Show the active image
+            src={activeImg || images[0]} // Use activeImg if available, else fallback to the first image
             alt=''
             className='w-[500px] h-[500px] aspect-square object-cover rounded-xl justify-center'
           />
           <div className='flex flex-row flex-start space-x-10 h-24'>
             {/* Thumbnails */}
-            {Object.values(images).map((img, index) => (
+            {Object.keys(images).map((key, index) => (
               <img
                 key={index}
-                src={img}
+                src={images[key]}
                 alt={`Thumbnail ${index}`}
-                className={`w-16 h-16 object-cover cursor-pointer rounded-md ${activeImg === img ? 'border-2 border-violet-600' : ''}`}
-                onClick={() => setActiveImage(img)}
+                className={`w-16 h-16 object-cover cursor-pointer rounded-md ${activeImg === images[key] ? 'border-2 border-violet-600' : ''}`}
+                onClick={() => handleThumbnailClick(index)}
               />
             ))}
           </div>
         </div>
         <div className='flex flex-col gap-4 lg:w-2/4'>
           <div>
-            <span className=' text-violet-600 font-semibold'>{product.category}</span>
+            <span className='text-violet-600 font-semibold'>{product.category}</span>
             <h1 className='text-3xl font-bold'>{product.title}</h1>
           </div>
           <p className='text-gray-700'>{product.description}</p>
@@ -103,5 +135,4 @@ const ProductPage = () => {
     </div>
   );
 };
-
 export default ProductPage;

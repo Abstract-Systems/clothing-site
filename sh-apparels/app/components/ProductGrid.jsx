@@ -2,13 +2,13 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
 import CartDropdown from './CartDropdown';
 import { CartContext } from '@/context/CartContext';
+
 import Link from 'next/link';
 
 export default function ProductGrid() {
   const [results, setResults] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
   const { cart, addToCart } = useContext(CartContext);
-  const { setData } = useContext(DataContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,14 +16,13 @@ export default function ProductGrid() {
         const response = await fetch('http://localhost:3000/api/products');
         const data = await response.json();
         setResults(data);
-        setData(data);
       } catch (error) {
         console.log('Error fetching products:', error);
       }
     };
 
     fetchData();
-  }, [setData]);
+  },[]);
 
   // Store the fetched data in cache memory for efficient retrieval
   const cachedResults = useMemo(() => results, [results]);
@@ -54,8 +53,7 @@ export default function ProductGrid() {
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4"
               onClick={() => addToCart({ ...product, quantity: 1 })}
             >
-              onClick={() => addToCart({ ...product, quantity: 1 })}
-            >
+            
               Add to Cart
             </button>
           </div>
