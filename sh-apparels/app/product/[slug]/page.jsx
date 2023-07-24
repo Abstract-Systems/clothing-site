@@ -28,43 +28,35 @@ const ProductPage = () => {
 
 
   return (
-    <div>
-        <div className='flex flex-col justify-between lg:flex-row gap-16 lg:items-center'>
-          <div className='flex flex-col gap-6 lg:w-2/4'>
-            <img
-              src={product.images[0]}
-              alt=''
-              className='w-[500px] h-[500px] aspect-square object-cover rounded-xl justify-center'
-            />
-            <div className='flex flex-row justify-between h-24'>
-              {/* Thumbnails */}
-            </div>
-          </div>
-          <div className='flex flex-col gap-4 lg:w-2/4'>
-            <div>
-              <span className=' text-violet-600 font-semibold'></span>
-              <h1 className='text-3xl font-bold'>{product.title}</h1>
-            </div>
-            <p className='text-gray-700'>{product.description}</p>
-            <h6 className='text-2xl font-semibold'>PKR {product.price}</h6>
-            <div className='flex flex-row items-center gap-12'>
-              <div className='flex flex-row items-center'>
-                {/* Quantity buttons */}
-              </div>
-              <button className='bg-violet-800 text-white font-semibold py-3 px-16 rounded-xl h-full'>
-                Add to Cart
-              </button>
-            </div>
+    <div className="p-4 md:p-6 lg:p-8 mx-auto">
+      <div className="flex flex-col gap-4 lg:flex-row">
+        <div className="flex flex-col gap-6 lg:w-2/4">
+          <img
+            src={product.images[0]}
+            alt=""
+            className="w-full h-[400px] aspect-square object-cover rounded-xl"
+          />
+          <div className="flex flex-row justify-between h-24">
+            {/* Thumbnails */}
           </div>
         </div>
-    
-        <div>
-          <p>Please log in to view this page.</p>
+        <div className="flex flex-col gap-4 lg:w-2/4">
           <div>
-
-          <li><Link className='"bg-blue-800 p-4 border-2' href="/api/auth/signin">Sign In</Link></li>
+            <span className="text-violet-600 font-semibold"></span>
+            <h1 className="text-2xl lg:text-3xl font-bold">{product.title}</h1>
+          </div>
+          <p className="text-gray-700">{product.description}</p>
+          <h6 className="text-xl lg:text-2xl font-semibold">PKR {product.price}</h6>
+          <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-12">
+            <div className="flex flex-row items-center">
+              {/* Quantity buttons */}
+            </div>
+            <button className="bg-blue-500 text-white font-semibold py-3 px-6 lg:px-16 rounded-xl h-full">
+              Add to Cart
+            </button>
           </div>
         </div>
+      </div>
     </div>
   );
 };
