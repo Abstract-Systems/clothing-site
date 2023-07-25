@@ -27,7 +27,6 @@ const ProductPage = () => {
           const response = await fetch('http://localhost:3000/api/products');
           const data = await response.json();
           setResults(data);
-          console.log(data) // Update the results state with fetched data
           const product = data.find((product) => product.slug === slug);
           setProduct(product);
           setImages(product.images);
