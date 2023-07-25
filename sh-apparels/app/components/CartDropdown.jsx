@@ -2,16 +2,17 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useContext } from "react";
-import { CartContext,itemQuantity } from "@/context/CartContext";
+import { CartContext } from "@/context/CartContext";
 
 export default function CartDropdown({ setOpen }) {
-  const { cart, removeFromCart, increaseQuantity, decreaseQuantity } = useContext(CartContext);
-  const calculateTotalPrice = () => {
-    const total = cart.reduce((accumulator, product) => {
-      return accumulator + parseFloat(product.price) * product.itemQuantity;
-    }, 0);
-    return total.toFixed(2); // Format the total with two decimal places
-  };
+  const { cart, removeFromCart, increaseQuantity, decreaseQuantity, calculateTotalPrice,setShippingCost } = useContext(CartContext);
+  
+  const handleCheckout = () => {
+    if(calculateTotalPrice()>3500){
+      setShippingCost(0);
+    }
+  }
+
   console.log(cart);
 
   return (
@@ -148,7 +149,8 @@ export default function CartDropdown({ setOpen }) {
                         <a
                           href="/checkout"
                           className="flex items-center disabled:bg-indigo-300 justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                          >
+                          onClick={handleCheckout}>
+                        
                          Checkout 
                         </a>
                       </div>

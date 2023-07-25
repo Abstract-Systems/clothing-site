@@ -9,7 +9,7 @@ import Link from 'next/link';
 export default function ProductGrid() {
   const [results, setResults] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
-  const { cart, addToCart } = useContext(CartContext);
+  const { cart, addToCart,itemQuantity } = useContext(CartContext);
   const notify = () => toast.success('Product has been added to cart 🚀', {
     position: "bottom-right",
     autoClose: 1000,
@@ -64,7 +64,7 @@ export default function ProductGrid() {
              //if stock is zero then disable the button
               disabled={product.stock === 0}
               onClick={() => {
-                addToCart({ ...product, quantity: 1 });
+                addToCart({ ...product, itemQuantity });
                 notify(); // Call the notify function when the product is added to the cart
               }}
               className='bg-violet-800 disabled:bg-violet-200 text-white font-semibold py-3 px-16 mx-4 rounded-xl h-full'

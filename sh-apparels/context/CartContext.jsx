@@ -6,6 +6,8 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [itemQuantity , setitemQuantity]= useState(1);
+  const [shippingCost,setShippingCost] = useState(300);
+
 
   // Retrieve cart from localStorage on component mount
   useEffect(() => {
@@ -58,9 +60,20 @@ export const CartProvider = ({ children }) => {
       )
     );
   };
+  const calculateTotalPrice = () => {
+    const total = cart.reduce((accumulator, product) => {
+      return accumulator + parseFloat(product.price) * product.itemQuantity;
+    }, 0);
+    return total.toFixed(2);
+     // Format the total with two decimal places
+  };
+  const clearCart = () => {
+    setCart([]);
+  }
+  
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, increaseQuantity, decreaseQuantity,itemQuantity,setitemQuantity }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, increaseQuantity, decreaseQuantity,itemQuantity,setitemQuantity, calculateTotalPrice,shippingCost, setShippingCost, clearCart }}>
       {children}
     </CartContext.Provider>
   );
