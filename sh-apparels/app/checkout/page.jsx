@@ -8,6 +8,7 @@ import { AiFillCreditCard } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import {FiSmartphone} from "react-icons/fi";
 import axios from "axios";
+import { signIn } from "next-auth/react";
 
 const Page = () => {
   const { data: session, status } = useSession();
@@ -21,18 +22,22 @@ const Page = () => {
   const [fullName, setFullName] = useState("");
   const [address, setAddress] = useState("");
   const [contactNumber, setContactNumber] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [pId, setpId] = useState([]);
   const productIds = cart.map(item => item._id);
 
 const  handlePlaceOrder = async () => {
+  setIsLoading(true);
   
   const generaterRandomNumber = () => {
     return Math.floor(Math.random() * 12500000000000000);
   };
+
+  const orderNo = generaterRandomNumber();
   try{
     const response = await axios.post("/api/order", {
-      orderNo: generaterRandomNumber(),
+      orderNo: orderNo,
       fullName: fullName,
       email: session.user.email,
       address: address,
@@ -41,9 +46,18 @@ const  handlePlaceOrder = async () => {
       totalAmount: +calculateTotalPrice() + shippingCost,
       status: "pending"
     });
-    console.log(response);
+    if(response.status === 200){
+      // reseting the cart
+      localStorage.setItem("cart", JSON.stringify([]));
+      router.push(`/order/${orderNo}`)
+    }
+    else{
+      alert("something went wrong");
+    }
   }catch(error){
     console.log(error);
+  }finally {
+    setIsLoading(false);
   }
 };
 
@@ -68,9 +82,13 @@ cart.forEach((product) => {
 
   if (!session) {
     return (
-      <div>
-        <h1>you are not logged in</h1>
+      <div class="flex justify-center items-center h-screen">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold mb-4">You are not logged in</h1>
+        <p class="text-lg text-gray-600 mb-8">Please login to access the content.</p>
+        <a onClick={()=>signIn()} class="bg-blue-500 cursor-pointer hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Login</a>
       </div>
+    </div>
     );
   }
 
@@ -362,8 +380,8 @@ cart.forEach((product) => {
               </p>
             </div>
           </div>
-          <button class="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white" onClick={handlePlaceOrder}>
-            Place Order
+          <button class="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white" disabled={isLoading} onClick={handlePlaceOrder}>
+          {isLoading ? 'Loading...' : 'Place Order'}
           </button>
         </div>
       </div>
