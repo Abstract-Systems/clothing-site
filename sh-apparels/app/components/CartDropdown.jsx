@@ -144,7 +144,6 @@ export default function CartDropdown({ setOpen }) {
                         Shipping and taxes calculated at checkout.
                       </p>
                       <div className="mt-6">
-                        <button disabled>
 
                         <a
                           href="/checkout"
@@ -152,7 +151,6 @@ export default function CartDropdown({ setOpen }) {
                           >
                          Checkout 
                         </a>
-                          </button>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
