@@ -109,13 +109,16 @@ const ProductPage = () => {
               </button>
             </div>
             <button
+             //if stock is zero then disable the button
+              disabled={product.stock === 0}
               onClick={() => {
                 addToCart({ ...product, amount });
                 notify(); // Call the notify function when the product is added to the cart
               }}
-              className='bg-violet-800 text-white font-semibold py-3 px-16 mx-4 rounded-xl h-full'
+              className='bg-violet-800 disabled:bg-violet-200 text-white font-semibold py-3 px-16 mx-4 rounded-xl h-full'
             >
-              Add to Cart
+              {product.stock === 0 ? 'Out of stock' : 'Add to cart'}
+              
             </button>
             <ToastContainer
               position="bottom-right"
