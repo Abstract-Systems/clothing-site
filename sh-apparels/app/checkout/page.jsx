@@ -1,8 +1,11 @@
-import React from 'react'
+
+import React,{useContext} from 'react'
 import { getSession } from './getSession'
+import { CartContext } from '@/context/CartContext'
 
 
 const page = async() => {
+  const { cart } = useContext(CartContext);
   const session =await getSession()
   if(!session){
     return (
@@ -11,11 +14,17 @@ const page = async() => {
       </div>
     )
   }
+  if(!cart){
+    return (
+      <div>
+        <h1>you have no items in cart</h1>
+      </div>
+    )
+  }
   return (
     <div>
       <h1>you are logged in</h1>
-      <h1>Welcome,{session.user.name}</h1>
-      <h1>Welcome,{session.user.image}</h1>
+      <h1></h1>
     </div>
   )
 }
