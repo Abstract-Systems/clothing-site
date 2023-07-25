@@ -2,13 +2,13 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useContext } from "react";
-import { CartContext } from "@/context/CartContext";
+import { CartContext,itemQuantity } from "@/context/CartContext";
 
 export default function CartDropdown({ setOpen }) {
   const { cart, removeFromCart, increaseQuantity, decreaseQuantity } = useContext(CartContext);
   const calculateTotalPrice = () => {
     const total = cart.reduce((accumulator, product) => {
-      return accumulator + parseFloat(product.price) * product.quantity;
+      return accumulator + parseFloat(product.price) * product.itemQuantity;
     }, 0);
     return total.toFixed(2); // Format the total with two decimal places
   };
@@ -113,7 +113,7 @@ export default function CartDropdown({ setOpen }) {
                                     <div className="flex flex-1 items-end justify-between text-sm">
                                       <button onClick={() => decreaseQuantity(product)}>-</button>
                                       <p className="text-gray-500">
-                                        Qty {product.quantity}
+                                        Qty {product.itemQuantity}
                                       </p>
                                       <button onClick={() => increaseQuantity(product)}>+</button>
 

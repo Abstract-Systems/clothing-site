@@ -5,6 +5,7 @@ export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
+  const [itemQuantity , setitemQuantity]= useState(1);
 
   // Retrieve cart from localStorage on component mount
   useEffect(() => {
@@ -19,14 +20,14 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (item) => {
+  const addToCart = (item, itemQuantity) => {
     const existingItem = cart.find((product) => product._id === item._id);
     if (existingItem) {
       // If the item already exists in the cart, update its quantity
       increaseQuantity(existingItem);
     } else {
       // Otherwise, add the new item to the cart with a quantity of 1
-      setCart((prevCart) => [...prevCart, { ...item, quantity: 1 }]);
+      setCart((prevCart) => [...prevCart, { ...item, quantity: itemQuantity }]);
     }
     
   };
@@ -39,7 +40,7 @@ export const CartProvider = ({ children }) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
         item._id === itemToIncrease._id
-          ? { ...item, quantity: item.quantity + 1 }
+          ? { ...item, itemQuantity: item.itemQuantity + 1 }
           : item
       )
     );
@@ -51,7 +52,7 @@ export const CartProvider = ({ children }) => {
         item._id === itemToDecrease._id
           ? {
               ...item,
-              quantity: item.quantity > 1 ? item.quantity - 1 : item.quantity,
+              itemQuantity: item.itemQuantity > 1 ? item.itemQuantity - 1 : item.itemQuantity,
             }
           : item
       )
@@ -59,7 +60,7 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, increaseQuantity, decreaseQuantity }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, increaseQuantity, decreaseQuantity,itemQuantity,setitemQuantity }}>
       {children}
     </CartContext.Provider>
   );
