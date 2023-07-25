@@ -9,11 +9,10 @@ import 'react-toastify/dist/ReactToastify.css';
 const ProductPage = () => {
   const [images, setImages] = useState({});
   const { slug } = useParams();
-  const { cart, addToCart } = useContext(CartContext);
+  const { cart, addToCart, itemQuantity, setitemQuantity } = useContext(CartContext);
   const [product, setProduct] = useState(null);
   const [results, setResults] = useState([]);
   const [activeImg, setActiveImage] = useState(null);
-  const [amount, setAmount] = useState(1);
 
 
   useEffect(() => {
@@ -95,14 +94,14 @@ const ProductPage = () => {
             <div className='flex flex-row items-center'>
               {/* Quantity buttons */}
               <button
-                onClick={() => setAmount((prevAmount) => Math.max(prevAmount - 1, 1))}
+                onClick={() => setitemQuantity((prevAmount) => Math.max(prevAmount - 1, 1))}
                 className='border border-gray-400 px-3 py-1 rounded-md'
               >
                 -
               </button>
-              <span className='space-x-4 mx-10'>{amount}</span>
+              <span className='space-x-4 mx-10'>{itemQuantity}</span>
               <button
-                onClick={() => setAmount((prevAmount) => prevAmount + 1)}
+                onClick={() => setitemQuantity((prevAmount) => prevAmount + 1)}
                 className='border border-gray-400 px-3 py-1 rounded-md'
               >
                 +
@@ -112,7 +111,7 @@ const ProductPage = () => {
              //if stock is zero then disable the button
               disabled={product.stock === 0}
               onClick={() => {
-                addToCart({ ...product, amount });
+                addToCart({ ...product, itemQuantity });
                 notify(); // Call the notify function when the product is added to the cart
               }}
               className='bg-violet-800 disabled:bg-violet-200 text-white font-semibold py-3 px-16 mx-4 rounded-xl h-full'
