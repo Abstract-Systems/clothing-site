@@ -53,16 +53,15 @@ console.log(productId, newStockValue)
   // Function to delete a product
   const handleDeleteProduct = async (productId) => {
     try {
-      const response = await axios.delete("api/products", {
-        "_id": productId
-
-        });
+      const response = await axios.delete("api/products", {data: {_id: productId}}
+        );
       if (response.status === 200) {
         alert("Product deleted successfully");
         setProducts((prevProducts) =>
           prevProducts.filter((product) => product._id !== productId)
         );
       }
+      console.log(response)
     } catch (error) {
       console.error('Error deleting product:', error);
     }

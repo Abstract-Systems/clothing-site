@@ -54,7 +54,7 @@ const  handlePlaceOrder = async () => {
     if(response.status === 200){
       // reseting the cart
       localStorage.setItem("cart", JSON.stringify([]));
-      // router.push(`/order/${orderNo}`)
+      router.push(`/order/${orderNo}`)
     }
     else{
       alert("something went wrong");

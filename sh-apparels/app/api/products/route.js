@@ -25,8 +25,11 @@ export async function GET(){
 
 }
 export async function DELETE(request){
+  const data = await request.json();
+    const { _id } = data;
+    console.log(_id);
     await connectDB();
-    await Product.findOneAndDelete(request);
+    await Product.findByIdAndDelete(_id);
     return NextResponse.json({message: "Product deleted successfully"})
 }
 

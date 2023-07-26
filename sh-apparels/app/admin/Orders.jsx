@@ -8,9 +8,7 @@ export const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       const {data} = await axios.get('/api/order')
-      setOrders(data)
-      console.log(orders[3].products)
-    }
+      setOrders(data)    }
     fetchOrders()
   }, [])
   
