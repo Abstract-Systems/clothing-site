@@ -6,7 +6,6 @@ import {axios} from 'axios'
 
 const OrderConfirmation = () => {
 
-  
 
     const { id } = useParams();
   return (
