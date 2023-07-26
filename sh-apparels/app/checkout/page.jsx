@@ -28,6 +28,8 @@ const Page = () => {
   const productIds = cart.map(item => item._id);
   const productname = cart.map(item => item.title);
   const productquantity = cart.map(item => item.itemQuantity);
+  const productImages = cart.map(item => item.images[0]);
+  
 
   
 
@@ -48,6 +50,7 @@ const  handlePlaceOrder = async () => {
       Products: productIds,
       ProductName: productname,
       ProductQuantity: productquantity,
+      ProductImage: productImages,
       totalAmount: +calculateTotalPrice() + shippingCost,
       status: "pending"
     });
