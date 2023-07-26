@@ -9,6 +9,7 @@ export const Orders = () => {
     const fetchOrders = async () => {
       const {data} = await axios.get('/api/order')
       setOrders(data)
+      console.log(orders[3].products)
     }
     fetchOrders()
   }, [])
@@ -24,6 +25,7 @@ export const Orders = () => {
         <p>Email: {order.email}</p>
         <p>Address: {order.address}</p>
         <p>Phone No: {order.phoneNo}</p>
+        <p>Products: {order.Products}</p>
         <p>Total Amount: {order.totalAmount}</p>
         <p>Status: {order.status}</p>
       </div>
