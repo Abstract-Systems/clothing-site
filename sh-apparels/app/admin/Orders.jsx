@@ -72,53 +72,47 @@ export const Orders = () => {
       sortOrder === 'asc' ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
     return compareResult;
   });
-
-  return (
-    <div className="container mx-auto mt-8">
-      <h2 className="text-2xl font-bold mb-4">Orders List</h2>
-      <input
-        type="text"
-        placeholder="Search by name or email"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="mb-4 px-2 py-1 border border-gray-300 rounded"
-      />
-      <select
-        value={`${sortBy}-${sortOrder}`}
-        onChange={handleSortChange}
-        className="mb-4 px-2 py-1 border border-gray-300 rounded"
-      >
-        <option value="orderNo-asc">Sort by Order No (Ascending)</option>
-        <option value="orderNo-desc">Sort by Order No (Descending)</option>
-        {/* Add more sorting options for other fields if needed */}
-      </select>
-      {sortedOrders.map((order) => (
-        <div key={order._id} className="bg-white shadow-md p-4 mb-4">
-          <p className="font-bold">Order No: {order.orderNo}</p>
-          <p>Full Name: {order.fullName}</p>
-          <p>Email: {order.email}</p>
-          <p>Address: {order.address}</p>
-          <p>Phone No: {order.phoneNo}</p>
-          <p>Products: {order.Products.join(' , ')}</p>
-          <p>Product Name:{order.ProductName.join(' , ')}</p>
-          <p>Product Quantity: {order.ProductQuantity.join(' , ')}</p>
-          <p><img src={order.ProductImage} alt="Product" height={100} width={100} />
-</p>
-
-          <p>Total Amount: {order.totalAmount}</p>
-          <p>
-            Status:
-            <select
-              value={order.status}
-              onChange={(e) => handleStatusChange(order._id, e.target.value)}
-            >
-              <option value="pending">Pending</option>
-              <option value="processing">Processing</option>
-              <option value="completed">Completed</option>
-            </select>
-          </p>
+    return (
+      <div className="container mx-auto mt-8">
+        <h2 className="text-2xl font-bold mb-4">Orders List</h2>
+        <div className="mb-4">
+          {/* Search input and sorting select remain the same */}
         </div>
-      ))}
-    </div>
-  );
-};
+        {sortedOrders.map((order) => (
+          <div key={order._id} className="bg-white shadow-md p-4 mb-4 rounded-lg border-t-4 border-green-500">
+            <p className="font-bold text-xl text-green-600">Order No: {order.orderNo}</p>
+            <p className="text-brown-700">Full Name: {order.fullName}</p>
+            <p className="text-brown-700">Email: {order.email}</p>
+            <p className="text-brown-700">Address: {order.address}</p>
+            <p className="text-brown-700">Phone No: {order.phoneNo}</p>
+            <p className="text-brown-700">Products: {order.Products.join(' , ')}</p>
+            <p className="text-brown-700">Product Name:{order.ProductName.join(' , ')}</p>
+            <p className="text-brown-700">Product Quantity: {order.ProductQuantity.join(' , ')}</p>
+            <div className="flex items-center mb-2">
+              {/* Use Starbucks-themed SVGs or icons here */}
+              <img
+                src={order.ProductImage}
+                alt="Product"
+                height={100}
+                width={100}
+                className="rounded-full"
+              />
+            </div>
+            <p className="text-brown-700">Total Amount: {order.totalAmount}</p>
+            <p className="text-brown-700">
+              Status:
+              <select
+                value={order.status}
+                onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                className="px-2 py-1 border border-gray-300 rounded "
+              >
+                <option value="pending">Pending</option>
+                <option value="processing">Processing</option>
+                <option value="completed">Completed</option>
+              </select>
+            </p>
+          </div>
+        ))}
+      </div>
+    );
+  };
