@@ -15,7 +15,6 @@ const productSchema = new Schema({
         required: [true, 'Product slug is required'],
         unique: true,
     },
-
     price: {
         type: Number,
         required: [true, 'Product price is required'],

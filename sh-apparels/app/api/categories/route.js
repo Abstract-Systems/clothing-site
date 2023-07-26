@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import Categories from "@/models/Categories";
-import { connectDB } from "@/util/db";
-
+import {connectDB} from "@/util/db";
 export async function GET(){
     await connectDB();
     const categories = await Categories.find({});
