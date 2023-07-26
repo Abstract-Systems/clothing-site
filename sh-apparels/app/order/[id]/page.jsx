@@ -1,8 +1,13 @@
 'use client'
 import React from 'react';
 import { useParams } from 'next/navigation';
+import {axios} from 'axios'
+
 
 const OrderConfirmation = () => {
+
+  
+
     const { id } = useParams();
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-200">
