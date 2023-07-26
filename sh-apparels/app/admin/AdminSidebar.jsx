@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AddProduct } from './AddProduct';
 import ManageCategories from './ManageCategories';
 import ManageProducts from './ManageProducts';
+import CompletedOrders from './CompletedOrders';
 import { Orders } from './Orders';
 
 const Sidebar = () => {
@@ -18,6 +19,8 @@ const Sidebar = () => {
         return <ManageProducts />;
       case 4:
         return <Orders />;
+      case 5:
+        return <CompletedOrders />;
       default:
         return null;
     }
@@ -59,6 +62,14 @@ const Sidebar = () => {
             onClick={() => setActiveOption(4)}
           >
             Orders
+          </li>
+          <li
+            className={`mb-2 p-2 cursor-pointer ${
+              activeOption === 5 ? 'bg-blue-600' : ''
+            }`}
+            onClick={() => setActiveOption(5)}
+          >
+            Completed Orders
           </li>
         </ul>
       </div>

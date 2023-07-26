@@ -29,7 +29,9 @@ export const Orders = () => {
     );
     setFilteredOrders(filtered);
   }, [searchTerm, orders]);
-
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       const response = await axios.put(`/api/order`, {
@@ -67,17 +69,36 @@ export const Orders = () => {
   };
 
   // Sort the filteredOrders array based on the selected sorting criteria
-  const sortedOrders = filteredOrders.sort((a, b) => {
+  const sortedOrders = filteredOrders
+  .filter((order) => order.status !== 'completed') // Filter out completed orders
+  .sort((a, b) => {
     const compareResult =
       sortOrder === 'asc' ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
     return compareResult;
   });
+  
     return (
       <div className="container mx-auto mt-8">
-        <h2 className="text-2xl font-bold mb-4">Orders List</h2>
-        <div className="mb-4">
-          {/* Search input and sorting select remain the same */}
-        </div>
+      <h2 className="text-2xl font-bold mb-4">Orders List</h2>
+      <div className="mb-4">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearch}
+          placeholder="Search by Full Name or Email"
+          className="px-4 py-2 border border-gray-300 rounded mb-2"
+        />
+        <label className="mr-2">Sort By:</label>
+        <select
+          value={`${sortBy}-${sortOrder}`}
+          onChange={handleSortChange}
+          className="px-2 py-1 border border-gray-300 rounded"
+        >
+          <option value="orderNo-asc">Order Number (Ascending)</option>
+          <option value="orderNo-desc">Order Number (Descending)</option>
+          {/* Add other sorting options here based on your requirements */}
+        </select>
+      </div>
         {sortedOrders.map((order) => (
           <div key={order._id} className="bg-white shadow-md p-4 mb-4 rounded-lg border-t-4 border-green-500">
             <p className="font-bold text-xl text-green-600">Order No: {order.orderNo}</p>
@@ -85,19 +106,34 @@ export const Orders = () => {
             <p className="text-brown-700">Email: {order.email}</p>
             <p className="text-brown-700">Address: {order.address}</p>
             <p className="text-brown-700">Phone No: {order.phoneNo}</p>
-            <p className="text-brown-700">Products: {order.Products.join(' , ')}</p>
-            <p className="text-brown-700">Product Name:{order.ProductName.join(' , ')}</p>
-            <p className="text-brown-700">Product Quantity: {order.ProductQuantity.join(' , ')}</p>
-            <div className="flex items-center mb-2">
-              {/* Use Starbucks-themed SVGs or icons here */}
-              <img
-                src={order.ProductImage}
-                alt="Product"
-                height={100}
-                width={100}
-                className="rounded-full"
-              />
-            </div>
+            <table className="table-auto w-full">
+          <thead>
+            <tr>
+              <th className="px-4 py-2">Product ID</th>
+              <th className="px-4 py-2">Product Name</th>
+              <th className="px-4 py-2">Product Quantity</th>
+              <th className="px-4 py-2">Product Image</th>
+            </tr>
+          </thead>
+          <tbody>
+            {order.Products.map((productId, index) => (
+              <tr key={index}>
+                <td className="border px-4 py-2">{productId}</td>
+                <td className="border px-4 py-2">{order.ProductName[index]}</td>
+                <td className="border px-4 py-2">{order.ProductQuantity[index]}</td>
+                <td className="border px-4 py-2">
+                  <img
+                    src={order.ProductImage[index]}
+                    alt={`Product ${index + 1}`}
+                    height={100}
+                    width={100}
+                    className="rounded-full"
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
             <p className="text-brown-700">Total Amount: {order.totalAmount}</p>
             <p className="text-brown-700">
               Status:
