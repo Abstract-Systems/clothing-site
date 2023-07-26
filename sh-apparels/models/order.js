@@ -28,6 +28,16 @@ const orderSchema = new Schema({
         ref: 'Product',
         required: [true, 'Product is required'],
     }],
+    ProductName: [{
+        type: Schema.Types.String,
+        ref: 'Product',
+        required: [true, 'Product is required'],
+    }],
+    ProductQuantity: {
+        type: Array,
+        required: [true, 'Product quantity is required'],
+    },
+    
     totalAmount:{
         type: Number,
         required: [true, 'Total amount is required'],

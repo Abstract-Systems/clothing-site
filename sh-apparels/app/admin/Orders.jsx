@@ -23,7 +23,11 @@ export const Orders = () => {
         <p>Email: {order.email}</p>
         <p>Address: {order.address}</p>
         <p>Phone No: {order.phoneNo}</p>
-        <p>Products: {order.Products}</p>
+        {/* Assuming `order.Products`, `order.ProductName`, and `order.ProductQuantity` are arrays */}
+<p>Products: {order.Products.join(', ')}</p>
+<p>ProductName: {order.ProductName.join(', ')}</p>
+<p>ProductQuantity: {order.ProductQuantity.join(', ')}</p>
+
         <p>Total Amount: {order.totalAmount}</p>
         <p>Status: {order.status}</p>
       </div>

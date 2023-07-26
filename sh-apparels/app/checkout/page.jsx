@@ -26,10 +26,13 @@ const Page = () => {
 
   const [pId, setpId] = useState([]);
   const productIds = cart.map(item => item._id);
+  const productname = cart.map(item => item.title);
+  const productquantity = cart.map(item => item.itemQuantity);
+
+  
 
 const  handlePlaceOrder = async () => {
   setIsLoading(true);
-  
   const generaterRandomNumber = () => {
     return Math.floor(Math.random() * 12500000000000000);
   };
@@ -43,13 +46,15 @@ const  handlePlaceOrder = async () => {
       address: address,
       phoneNo: contactNumber,
       Products: productIds,
+      ProductName: productname,
+      ProductQuantity: productquantity,
       totalAmount: +calculateTotalPrice() + shippingCost,
       status: "pending"
     });
     if(response.status === 200){
       // reseting the cart
       localStorage.setItem("cart", JSON.stringify([]));
-      router.push(`/order/${orderNo}`)
+      // router.push(`/order/${orderNo}`)
     }
     else{
       alert("something went wrong");
