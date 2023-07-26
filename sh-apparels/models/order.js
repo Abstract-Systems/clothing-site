@@ -37,6 +37,11 @@ const orderSchema = new Schema({
         type: Array,
         required: [true, 'Product quantity is required'],
     },
+    ProductImage: [{
+        type: Schema.Types.String,
+        ref: 'Product',
+        required: [true, 'Product image is required'],
+    }],
     
     totalAmount:{
         type: Number,
