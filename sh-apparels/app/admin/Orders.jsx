@@ -1,17 +1,18 @@
 import {useState,useEffect} from 'react'
 import axios from 'axios'
 
+
 export const Orders = () => {
   const [orders, setOrders] = useState([])
 
-  const fetchOrders = async()=>{
-    const response = await axios.get("api/order");
-    setOrders(response.data);
-  }
-
   useEffect(() => {
-    fetchOrders();
+    const fetchOrders = async () => {
+      const {data} = await axios.get('/api/order')
+      setOrders(data)
+    }
+    fetchOrders()
   }, [])
+  
   
   return (
     <div className="container mx-auto mt-8">
@@ -23,11 +24,7 @@ export const Orders = () => {
         <p>Email: {order.email}</p>
         <p>Address: {order.address}</p>
         <p>Phone No: {order.phoneNo}</p>
-        {/* Assuming `order.Products`, `order.ProductName`, and `order.ProductQuantity` are arrays */}
-<p>Products: {order.Products.join(', ')}</p>
-<p>ProductName: {order.ProductName.join(', ')}</p>
-<p>ProductQuantity: {order.ProductQuantity.join(', ')}</p>
-
+        <p>Products: {order.Products}</p>
         <p>Total Amount: {order.totalAmount}</p>
         <p>Status: {order.status}</p>
       </div>
