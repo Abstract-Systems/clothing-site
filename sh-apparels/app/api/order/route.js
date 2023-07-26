@@ -12,6 +12,7 @@ export async function POST(request) {
     Products,
     ProductName,
     ProductQuantity,
+    ProductImage,
     totalAmount,
     status,
   } = await request.json();
@@ -26,6 +27,7 @@ export async function POST(request) {
       Products,
       ProductName,
       ProductQuantity,
+      ProductImage,
       totalAmount,
       status,
     });
