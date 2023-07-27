@@ -6,7 +6,9 @@ export const options = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            secret: process.env.NEXTAUTH_SECRET
           }),
+
 
         CredentialsProvider({
             name: "Credentials",
@@ -34,6 +36,8 @@ export const options = {
                     return null
                 }
             }
+            
         })
     ],
+    secret: process.env.NEXTAUTH_SECRET,
 }
