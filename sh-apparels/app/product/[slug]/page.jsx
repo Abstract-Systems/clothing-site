@@ -24,7 +24,7 @@ const ProductPage = () => {
       // Fetch the product from the API if not already available in the results state
       const fetchData = async () => {
         try {
-          const response = await fetch('http://localhost:3000/api/products');
+          const response = await fetch('/api/products');
           const data = await response.json();
           setResults(data);
           const product = data.find((product) => product.slug === slug);

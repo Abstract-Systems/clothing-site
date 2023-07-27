@@ -35,8 +35,8 @@ const navigation = {
           id: 'clothing',
           name: 'Clothing',
           items: [
-            { name: '2-Piece', href: '/Category/2-piece' },
-            { name: '3-Piece', href: '/Category/3-piece' },
+            { name: '2-Piece', href: '/Category/2-Piece' },
+            { name: '3-Piece', href: '/Category/3-Piece' },
             { name: 'Pants', href: '/Category/Pants' },
             { name: 'T-Shirts', href: '/Category/T-Shirts' },
           ],

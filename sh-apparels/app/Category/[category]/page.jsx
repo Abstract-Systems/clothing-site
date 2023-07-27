@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Link from 'next/link';
 
 async function getData() {
-  const res = await fetch('http://localhost:3000/api/products');
+  const res = await fetch('/api/products');
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }
@@ -19,6 +19,7 @@ const Page = () => {
   const { category } = useParams(); // Access category directly using useParams
   const [products, setProducts] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [loading, setLoading] = useState(true); // Add a loading state
   const { cart, addToCart, itemQuantity } = useContext(CartContext);
   const notify = () => toast.success('Product has been added to cart 🚀', {
     position: "bottom-right",
@@ -36,6 +37,7 @@ const Page = () => {
       try {
         const data = await getData();
         setProducts(data);
+        setLoading(false); // Set loading to false when data is fetched
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -49,44 +51,67 @@ const Page = () => {
 
   const itemsOutOfStock = cachedResults.filter((product) => product.category === category && product.stock === 0);
 
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Loading...</h2>
+          <h2 className="text-2xl font-bold mb-4">Please Wait 😢</h2>
+          <h2 className="text-2xl font-bold mb-4">Just A little bit 🤞</h2>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-4">{category}</h1>
-      {cachedResults.length === 0 || itemsOutOfStock.length === cachedResults.length && (
-        <div className="text-center text-red-500 text-lg font-semibold">
-          Items out of stock
+
+
+
+      {cachedResults.filter((product) => product.category === category).length === 0 && (
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">We are currently working to bring more Products</h2>
+          <h2 className="text-2xl font-bold mb-4">Please Check Back Soon 😢</h2>
+          <h2 className="text-2xl font-bold mb-4">Or Maybe Buy T-Shirts 👇</h2>
+          <Link href="/Category/T-Shirts">
+            <button className='bg-violet-800 disabled:bg-violet-200 text-white font-semibold py-3 px-16 mx-4 rounded-xl h-full'>
+              T Shirts Here
+            </button>
+          </Link>
+          
+          
         </div>
-        
       )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {cachedResults
           .filter((product) => product.category === category)
           .map((product) => (
-            <div key={product._id} className="border border-gray-200 rounded-md p-4 hover:shadow-lg">
-              <Link href={`/product/${product.slug}`} key={product._id}>
-                <div className="aspect-w-2 aspect-h-3 mb-4">
-                  <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover rounded-md" />
-                </div>
-                <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
-                <p className="text-gray-500 mb-4">Price: Rs.{product.price}</p>
-                <p className="text-gray-700">{product.description}</p>
-                <span className="text-sm text-gray-500">{product.category}</span>
-                <br />
-              </Link>
-              <div className="text-center">
-                <button
-                  //if stock is zero then disable the button
-                  disabled={product.stock === 0}
-                  onClick={() => {
-                    addToCart({ ...product, itemQuantity });
-                    notify(); // Call the notify function when the product is added to the cart
-                  }}
-                  className='bg-violet-800 disabled:bg-violet-200 text-white font-semibold py-3 px-16 mx-4 rounded-xl h-full'
-                >
-                  {product.stock === 0 ? 'Out of stock' : 'Add to cart'}
-                </button>
-              </div>
-            </div>
+            <div key={product._id} className="border border-gray-200 rounded-md p-4 hover:shadow-lg flex flex-col">
+        <Link href={`/product/${product.slug}`} key={product._id}>
+          <div className="aspect-w-2 aspect-h-3 bg-cover">
+            <img src={product.images[0]} alt={product.name} className="max-h-full object-contain" />
+          </div>
+          <h2 className="text-xl font-semibold my-2">{product.name}</h2>
+          <p className="text-gray-500 text-2xl font-bold text-slate-600 mb-4">Price: Rs.{product.price}</p>
+          <p className="text-gray-700 flex-grow">{product.description}</p>
+          <span className="text-sm text-gray-500">{product.category}</span>
+        </Link>
+        <div className="text-center mt-auto">
+          <button
+            //if stock is zero then disable the button
+            disabled={product.stock === 0}
+            onClick={() => {
+              addToCart({ ...product, itemQuantity });
+              notify(); // Call the notify function when the product is added to the cart
+            }}
+            className='bg-violet-800 disabled:bg-violet-200 text-white font-semibold py-3 px-16 mx-4 rounded-xl'
+          >
+            {product.stock === 0 ? 'Out of stock' : 'Add to cart'}
+          </button>
+        </div>
+      </div>
           ))}
       </div>
       {/* Render the CartDropdown component and pass the cartOpen state */}
