@@ -87,9 +87,9 @@ const Page = () => {
       <div key={product._id} className="border border-gray-200 rounded-md p-2 hover:shadow-lg flex flex-col">
         <Link href={`/product/${product.slug}`} key={product._id}>
           <div className="aspect-w-2 aspect-h-3 bg-cover">
-            <img src={product.images[0]} alt={product.name} className="max-h-full object-contain" />
+            <img src={product.images[0]} alt={product.name} className="max-h-50 object-contain" />
           </div>
-          <h2 className="text-lg font-semibold my-1">{product.name}</h2>
+          <h2 className="text-lg font-semibold my-1">{product.title}</h2>
           <div className="text-center">
               {product.stock === 0 ? (
                 <span className="text-sm text-red-400">Out of Stock</span>
@@ -98,11 +98,6 @@ const Page = () => {
               )}
             </div>
           <p className="text-gray-500 text-lg font-bold mb-2">Price: Rs.{product.price}</p>
-          <p className="text-gray-700 flex-grow text-sm">
-            {product.description.length > 50
-              ? product.description.slice(0, 50) + "..." // Display the first 50 characters and add "..." if more content is available
-              : product.description}
-          </p>
           <span className="text-xs text-gray-500">{product.category}</span>
         </Link>
         <div className="text-center mt-auto">

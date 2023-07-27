@@ -7,7 +7,9 @@ import { signIn, useSession, signOut } from 'next-auth/react'
 import SignInButton from './SignInButton'
 import CartDropdown from './CartDropdown'
 import { CartContext } from '@/context/CartContext'
+import Image from 'next/image'
 import { useContext } from 'react'
+import logo from '../../public/logo.png'
 
 
 
@@ -249,12 +251,13 @@ const { data: session, status } = useSession()
 
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
-                <a href="#">
-                  <span className="sr-only">Your Company</span>
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    alt=""
+                <a href="/">
+                  <span className="sr-only">Horizon Wear</span>
+                  <Image 
+                    src="/logo.png"
+                    alt="logo"
+                    width={40}
+                    height={40}
                   />
                 </a>
               </div>
