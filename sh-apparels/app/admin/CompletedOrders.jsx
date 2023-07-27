@@ -16,7 +16,20 @@ const CompletedOrders = () => {
     };
     fetchCompletedOrders();
   }, []);
-
+  const handleDeleteOrder = async (orderId) => {
+    try {
+      // Make an API request to delete the order with the given orderId
+      const resp = await axios.delete("/api/order", { data: { orderId } });
+      console.log(resp);
+      if(resp.status === 200){
+        alert("Order Deleted Successfully");
+      }
+      // After successful deletion, remove the deleted order from the state
+      setCompletedOrders((prevOrders) => prevOrders.filter((order) => order._id !== orderId));
+    } catch (error) {
+      console.error('Error deleting order:', error);
+    }
+  };
   return (
     <div className="container mx-auto mt-8">
       <h2 className="text-2xl font-bold mb-4">Completed Orders List</h2>
@@ -59,7 +72,12 @@ const CompletedOrders = () => {
               </tbody>
             </table>
             <p className="text-brown-700">Total Amount: {order.totalAmount}</p>
-            {/* ... */}
+            <button
+              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={() => handleDeleteOrder(order._id)}
+            >
+              Delete Order
+            </button>
           </div>
         ))
       )}

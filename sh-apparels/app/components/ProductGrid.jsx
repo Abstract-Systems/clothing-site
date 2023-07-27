@@ -69,7 +69,7 @@ export default function ProductGrid() {
           </div>
           <div className="text-center">
             <h3 className="text-lg font-semibold">{product.title}</h3>
-            <p className="text-sm text-gray-500">{product.price}</p>
+            <p className="text-sm text-gray-500">Rs. {product.price}</p>
             <div className="text-center">
               {product.stock === 0 ? (
                 <span className="text-sm text-red-400">Out of Stock</span>

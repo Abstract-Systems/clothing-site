@@ -90,7 +90,14 @@ const Page = () => {
             <img src={product.images[0]} alt={product.name} className="max-h-full object-contain" />
           </div>
           <h2 className="text-lg font-semibold my-1">{product.name}</h2>
-          <p className="text-gray-500 text-lg font-bold text-slate-600 mb-2">Price: Rs.{product.price}</p>
+          <div className="text-center">
+              {product.stock === 0 ? (
+                <span className="text-sm text-red-400">Out of Stock</span>
+              ) : (
+                <span className="text-sm text-green-400">Available in Stock {product.stock}</span>
+              )}
+            </div>
+          <p className="text-gray-500 text-lg font-bold mb-2">Price: Rs.{product.price}</p>
           <p className="text-gray-700 flex-grow text-sm">
             {product.description.length > 50
               ? product.description.slice(0, 50) + "..." // Display the first 50 characters and add "..." if more content is available

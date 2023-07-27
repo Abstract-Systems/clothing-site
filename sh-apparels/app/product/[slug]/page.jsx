@@ -86,9 +86,17 @@ const ProductPage = () => {
           <div>
             <span className='text-violet-600 font-semibold'>{product.category}</span>
             <h1 className='text-3xl font-bold'>{product.title}</h1>
+            
           </div>
             <h1 className='text-xl font-bold'>Description</h1>
           <p className='text-gray-700'>{product.description}</p>
+          <div className="text-center">
+              {product.stock === 0 ? (
+                <span className="text-sm text-red-400">Out of Stock</span>
+              ) : (
+                <span className="text-sm text-green-400">Available in Stock {product.stock}</span>
+              )}
+            </div>
           <h6 className='text-2xl font-semibold'>PKR {product.price}</h6>
           <div className='flex flex-row items-center gap-12'>
             <div className='flex flex-row items-center'>
