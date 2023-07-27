@@ -7,6 +7,7 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [itemQuantity , setitemQuantity]= useState(1);
   const [shippingCost,setShippingCost] = useState(300);
+  const [placedOrder,setPlacedOrder] = useState(false);
 
 
   // Retrieve cart from localStorage on component mount
@@ -105,7 +106,7 @@ export const CartProvider = ({ children }) => {
   
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, increaseQuantity, decreaseQuantity,itemQuantity,setitemQuantity, calculateTotalPrice,shippingCost, setShippingCost, clearCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, increaseQuantity, decreaseQuantity,itemQuantity,setitemQuantity, calculateTotalPrice,shippingCost, setShippingCost, clearCart,placedOrder,setPlacedOrder }}>
       {children}
     </CartContext.Provider>
   );

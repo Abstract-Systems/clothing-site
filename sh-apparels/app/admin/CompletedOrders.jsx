@@ -19,7 +19,7 @@ const CompletedOrders = () => {
   const handleDeleteOrder = async (orderId) => {
     try {
       // Make an API request to delete the order with the given orderId
-      const resp = await axios.delete("/api/order", { data: { orderId } });
+      const resp = await axios.delete("api/order", {data: {_id: orderId}});
       console.log(resp);
       if(resp.status === 200){
         alert("Order Deleted Successfully");

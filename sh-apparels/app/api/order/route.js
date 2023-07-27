@@ -59,12 +59,12 @@ export async function PUT(request) {
   }
 }
 export async function DELETE(request){
-    const data = await request.json();
-      const { _id } = data;
-      console.log(_id);
-      await connectDB();
-      await Order.findByIdAndDelete(_id);
-      return NextResponse.json({message: "Product deleted successfully"})
+  const data = await request.json();
+    const { _id } = data;
+    console.log(_id);
+    await connectDB();
+    await Order.findByIdAndDelete(_id);
+    return NextResponse.json({message: "Product deleted successfully"})
 }
 
   

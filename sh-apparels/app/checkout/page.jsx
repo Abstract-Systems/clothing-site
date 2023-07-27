@@ -17,6 +17,8 @@ const Page = () => {
     calculateTotalPrice,
     shippingCost,
     setShippingCost,
+    placedOrder,
+    setPlacedOrder
   } = useContext(CartContext);
   const router = useRouter();
   const [fullName, setFullName] = useState("");
@@ -58,6 +60,7 @@ const  handlePlaceOrder = async () => {
       // reseting the cart
       localStorage.setItem("cart", JSON.stringify([]));
       router.push(`/order/${orderNo}`)
+      setPlacedOrder(true);
     }
     else{
       alert("something went wrong");
