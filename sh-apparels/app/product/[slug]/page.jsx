@@ -87,6 +87,7 @@ const ProductPage = () => {
             <span className='text-violet-600 font-semibold'>{product.category}</span>
             <h1 className='text-3xl font-bold'>{product.title}</h1>
           </div>
+            <h1 className='text-xl font-bold'>Description</h1>
           <p className='text-gray-700'>{product.description}</p>
           <h6 className='text-2xl font-semibold'>PKR {product.price}</h6>
           <div className='flex flex-row items-center gap-12'>

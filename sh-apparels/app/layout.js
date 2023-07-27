@@ -1,8 +1,10 @@
+
 import './globals.css'
 import { Inter } from 'next/font/google'
 import SessionProviders from '../context/AuthProvider'
 import Navbar from './components/Navbar'
 import { CartProvider } from '@/context/CartContext'
+import Footer from './components/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -21,6 +23,7 @@ export default function RootLayout({ children }) {
         <div>
         {children}
         </div>  
+        <Footer/>
         </CartProvider>
     </SessionProviders>
         </body>

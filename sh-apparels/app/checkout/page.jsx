@@ -102,10 +102,13 @@ cart.forEach((product) => {
 
   if (!cart || cart.length === 0) {
     return (
-      <div>
-        <h1>you have no items in cart</h1>
-        <button onClick={handleContinueShopping}>Continue Shopping</button>
+      <div class="flex justify-center items-center h-screen">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold mb-4">You got nothing in the bag!</h1>
+        <p class="text-lg text-gray-600 mb-8">Add Something</p>
+        <a onClick={()=>handleContinueShopping()} class="bg-blue-500 cursor-pointer hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Continue Shopping</a>
       </div>
+    </div>
     );
   }
 

@@ -15,7 +15,7 @@ const navigation = {
   categories: [
     {
       id: 'women',
-      name: 'Women',
+      name: 'Categories',
       featured: [
         {
           name: 'Summer Collection',

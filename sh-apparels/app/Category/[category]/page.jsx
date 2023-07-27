@@ -66,9 +66,6 @@ const Page = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-4">{category}</h1>
-
-
-
       {cachedResults.filter((product) => product.category === category).length === 0 && (
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">We are currently working to bring more Products</h2>
@@ -83,37 +80,41 @@ const Page = () => {
           
         </div>
       )}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {cachedResults
-          .filter((product) => product.category === category)
-          .map((product) => (
-            <div key={product._id} className="border border-gray-200 rounded-md p-4 hover:shadow-lg flex flex-col">
+<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+  {cachedResults
+    .filter((product) => product.category === category)
+    .map((product) => (
+      <div key={product._id} className="border border-gray-200 rounded-md p-2 hover:shadow-lg flex flex-col">
         <Link href={`/product/${product.slug}`} key={product._id}>
           <div className="aspect-w-2 aspect-h-3 bg-cover">
             <img src={product.images[0]} alt={product.name} className="max-h-full object-contain" />
           </div>
-          <h2 className="text-xl font-semibold my-2">{product.name}</h2>
-          <p className="text-gray-500 text-2xl font-bold text-slate-600 mb-4">Price: Rs.{product.price}</p>
-          <p className="text-gray-700 flex-grow">{product.description}</p>
-          <span className="text-sm text-gray-500">{product.category}</span>
+          <h2 className="text-lg font-semibold my-1">{product.name}</h2>
+          <p className="text-gray-500 text-lg font-bold text-slate-600 mb-2">Price: Rs.{product.price}</p>
+          <p className="text-gray-700 flex-grow text-sm">
+            {product.description.length > 50
+              ? product.description.slice(0, 50) + "..." // Display the first 50 characters and add "..." if more content is available
+              : product.description}
+          </p>
+          <span className="text-xs text-gray-500">{product.category}</span>
         </Link>
         <div className="text-center mt-auto">
           <button
-            //if stock is zero then disable the button
+            // if stock is zero then disable the button
             disabled={product.stock === 0}
             onClick={() => {
               addToCart({ ...product, itemQuantity });
               notify(); // Call the notify function when the product is added to the cart
             }}
-            className='bg-violet-800 disabled:bg-violet-200 text-white font-semibold py-3 px-16 mx-4 rounded-xl'
+            className="bg-violet-800 disabled:bg-violet-200 text-white font-semibold py-2 px-8 rounded-xl"
           >
             {product.stock === 0 ? 'Out of stock' : 'Add to cart'}
           </button>
         </div>
       </div>
-          ))}
-      </div>
+    ))}
+</div>
+
       {/* Render the CartDropdown component and pass the cartOpen state */}
       {cartOpen && <CartDropdown setOpen={setCartOpen} />}
       <ToastContainer
